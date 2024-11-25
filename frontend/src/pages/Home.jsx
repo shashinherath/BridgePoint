@@ -2,11 +2,13 @@ import React from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import HomeList from "../components/HomeList";
+import Hero from "../components/Hero";
 
 export default function Home() {
   return (
     <div className="flex flex-col">
       <Navbar />
+      <Hero />
       <div className="flex flex-col justify-center items-center flex-grow">
         <HomeList bgColor="#DDFBFC" circleColor="#8EBD8A" />
         <HomeList bgColor="#FCDDDD" circleColor="#C57474" />
