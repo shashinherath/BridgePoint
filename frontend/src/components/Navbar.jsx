@@ -9,7 +9,7 @@ function classNames(...classes) {
 
 export default function Navbar() {
   return (
-    <Disclosure as="nav" className="bg-gray-800">
+    <Disclosure as="nav" className="bg-orange-800">
       {({ open }) => (
         <>
           <div className="mx-auto max-w-7xl px-2 sm:px-4 lg:px-8">
@@ -32,25 +32,25 @@ export default function Navbar() {
                     {/* Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" */}
                     <a
                       href="#"
-                      className="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white"
+                      className="rounded-md bg-orange-800 px-3 py-2 text-sm font-medium text-white"
                     >
                       Dashboard
                     </a>
                     <a
                       href="#"
-                      className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+                      className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-orange-700 hover:text-white"
                     >
                       Team
                     </a>
                     <a
                       href="#"
-                      className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+                      className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-orange-700 hover:text-white"
                     >
                       Projects
                     </a>
                     <a
                       href="#"
-                      className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+                      className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-orange-700 hover:text-white"
                     >
                       Calendar
                     </a>
@@ -65,14 +65,14 @@ export default function Navbar() {
                   <div className="relative">
                     <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                       <MagnifyingGlassIcon
-                        className="h-5 w-5 text-gray-400"
+                        className="h-5 w-5 text-orange-400"
                         aria-hidden="true"
                       />
                     </div>
                     <input
                       id="search"
                       name="search"
-                      className="block w-full rounded-md border-0 bg-gray-700 py-1.5 pl-10 pr-3 text-gray-300 placeholder:text-gray-400 focus:bg-white focus:text-gray-900 focus:ring-0 sm:text-sm sm:leading-6"
+                      className="block w-full rounded-md border-0 bg-orange-700 py-1.5 pl-10 pr-3 text-gray-300 placeholder:text-gray-400 focus:bg-white focus:text-gray-900 focus:ring-0 sm:text-sm sm:leading-6"
                       placeholder="Search"
                       type="search"
                     />
