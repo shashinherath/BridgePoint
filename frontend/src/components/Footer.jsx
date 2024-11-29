@@ -1,22 +1,21 @@
+import React from "react";
+import FooterLogo from "../assets/logo/FooterLogo.png";
+
 const navigation = {
   solutions: [
     { name: "Marketing", href: "#" },
     { name: "Analytics", href: "#" },
     { name: "Commerce", href: "#" },
-    { name: "Insights", href: "#" },
   ],
   support: [
     { name: "Pricing", href: "#" },
     { name: "Documentation", href: "#" },
     { name: "Guides", href: "#" },
-    { name: "API Status", href: "#" },
   ],
   company: [
     { name: "About", href: "#" },
     { name: "Blog", href: "#" },
     { name: "Jobs", href: "#" },
-    { name: "Press", href: "#" },
-    { name: "Partners", href: "#" },
   ],
   legal: [
     { name: "Claim", href: "#" },
@@ -90,29 +89,25 @@ const navigation = {
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-900" aria-labelledby="footer-heading">
+    <footer className="bg-gray-300" aria-labelledby="footer-heading">
       <h2 id="footer-heading" className="sr-only">
         Footer
       </h2>
-      <div className="mx-auto max-w-7xl px-6 pb-8 pt-16 sm:pt-24 lg:px-8 lg:pt-32">
+      <div className="mx-auto max-w-7xl px-6 pb-8 pt-16 sm:pt-24 lg:px-8 lg:pt-16">
         <div className="xl:grid xl:grid-cols-3 xl:gap-8">
-          <img
-            className="h-7"
-            src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-            alt="Company name"
-          />
+          <img className="h-60" src={FooterLogo} alt="BridgePoint" />
           <div className="mt-16 grid grid-cols-2 gap-8 xl:col-span-2 xl:mt-0">
             <div className="md:grid md:grid-cols-2 md:gap-8">
               <div>
-                <h3 className="text-sm font-semibold leading-6 text-white">
-                  Solutions
+                <h3 className="text-sm font-semibold leading-6 text-black">
+                  About BridgePoint
                 </h3>
                 <ul role="list" className="mt-6 space-y-4">
                   {navigation.solutions.map((item) => (
                     <li key={item.name}>
                       <a
                         href={item.href}
-                        className="text-sm leading-6 text-gray-300 hover:text-white"
+                        className="text-sm leading-6 text-gray-900 hover:text-gray-600"
                       >
                         {item.name}
                       </a>
@@ -121,7 +116,7 @@ export default function Footer() {
                 </ul>
               </div>
               <div className="mt-10 md:mt-0">
-                <h3 className="text-sm font-semibold leading-6 text-white">
+                <h3 className="text-sm font-semibold leading-6 text-black">
                   Support
                 </h3>
                 <ul role="list" className="mt-6 space-y-4">
@@ -129,7 +124,7 @@ export default function Footer() {
                     <li key={item.name}>
                       <a
                         href={item.href}
-                        className="text-sm leading-6 text-gray-300 hover:text-white"
+                        className="text-sm leading-6 text-gray-900 hover:text-gray-600"
                       >
                         {item.name}
                       </a>
@@ -140,7 +135,7 @@ export default function Footer() {
             </div>
             <div className="md:grid md:grid-cols-2 md:gap-8">
               <div>
-                <h3 className="text-sm font-semibold leading-6 text-white">
+                <h3 className="text-sm font-semibold leading-6 text-black">
                   Company
                 </h3>
                 <ul role="list" className="mt-6 space-y-4">
@@ -148,7 +143,7 @@ export default function Footer() {
                     <li key={item.name}>
                       <a
                         href={item.href}
-                        className="text-sm leading-6 text-gray-300 hover:text-white"
+                        className="text-sm leading-6 text-gray-900 hover:text-gray-600"
                       >
                         {item.name}
                       </a>
@@ -157,7 +152,7 @@ export default function Footer() {
                 </ul>
               </div>
               <div className="mt-10 md:mt-0">
-                <h3 className="text-sm font-semibold leading-6 text-white">
+                <h3 className="text-sm font-semibold leading-6 text-black">
                   Legal
                 </h3>
                 <ul role="list" className="mt-6 space-y-4">
@@ -165,7 +160,7 @@ export default function Footer() {
                     <li key={item.name}>
                       <a
                         href={item.href}
-                        className="text-sm leading-6 text-gray-300 hover:text-white"
+                        className="text-sm leading-6 text-gray-900 hover:text-gray-600"
                       >
                         {item.name}
                       </a>
@@ -177,21 +172,22 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-8 border-t border-white/10 pt-8 md:flex md:items-center md:justify-between">
+        <div className="mt-8 border-t border-black/10 pt-8 md:flex md:items-center md:justify-between">
           <div className="flex space-x-6 md:order-2">
             {navigation.social.map((item) => (
               <a
                 key={item.name}
                 href={item.href}
-                className="text-gray-500 hover:text-gray-400"
+                className="text-gray-700 hover:text-gray-500"
               >
                 <span className="sr-only">{item.name}</span>
                 <item.icon className="h-6 w-6" aria-hidden="true" />
               </a>
             ))}
           </div>
-          <p className="mt-8 text-xs leading-5 text-gray-400 md:order-1 md:mt-0">
-            &copy; 2020 Your Company, Inc. All rights reserved.
+          <p className="mt-8 text-xs leading-5 text-gray-600 md:order-1 md:mt-0">
+            &copy; {new Date().getFullYear()} BridgePoint, Inc. All rights
+            reserved.
           </p>
         </div>
       </div>
