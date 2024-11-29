@@ -6,20 +6,16 @@ const navigation = {
     { name: "Marketing", href: "#" },
     { name: "Analytics", href: "#" },
     { name: "Commerce", href: "#" },
-    { name: "Insights", href: "#" },
   ],
   support: [
     { name: "Pricing", href: "#" },
     { name: "Documentation", href: "#" },
     { name: "Guides", href: "#" },
-    { name: "API Status", href: "#" },
   ],
   company: [
     { name: "About", href: "#" },
     { name: "Blog", href: "#" },
     { name: "Jobs", href: "#" },
-    { name: "Press", href: "#" },
-    { name: "Partners", href: "#" },
   ],
   legal: [
     { name: "Claim", href: "#" },
@@ -97,14 +93,14 @@ export default function Footer() {
       <h2 id="footer-heading" className="sr-only">
         Footer
       </h2>
-      <div className="mx-auto max-w-7xl px-6 pb-8 pt-16 sm:pt-24 lg:px-8 lg:pt-32">
+      <div className="mx-auto max-w-7xl px-6 pb-8 pt-16 sm:pt-24 lg:px-8 lg:pt-16">
         <div className="xl:grid xl:grid-cols-3 xl:gap-8">
           <img className="h-60" src={FooterLogo} alt="BridgePoint" />
           <div className="mt-16 grid grid-cols-2 gap-8 xl:col-span-2 xl:mt-0">
             <div className="md:grid md:grid-cols-2 md:gap-8">
               <div>
                 <h3 className="text-sm font-semibold leading-6 text-black">
-                  Solutions
+                  About BridgePoint
                 </h3>
                 <ul role="list" className="mt-6 space-y-4">
                   {navigation.solutions.map((item) => (
@@ -190,7 +186,8 @@ export default function Footer() {
             ))}
           </div>
           <p className="mt-8 text-xs leading-5 text-gray-600 md:order-1 md:mt-0">
-            &copy; 2020 BridgePoint, Inc. All rights reserved.
+            &copy; {new Date().getFullYear()} BridgePoint, Inc. All rights
+            reserved.
           </p>
         </div>
       </div>
