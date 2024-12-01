@@ -45,7 +45,7 @@ function Register() {
           <label htmlFor="name" className='block text-gray-700 mb-2'>
             Password
           </label>
-          <input type="text" id="name" placeholder="Enter Your Password" className='w-full p-3 border rounded-lg focus:ring-orange-500'/>
+          <input type="password" id="name" placeholder="Enter Your Password" className='w-full p-3 border rounded-lg focus:ring-orange-500'/>
           </div>
           <button type="submit" className='w-full p-3 bg-orange-600 text-white rounded-lg hover:bg-orange-700'>Register Now</button>
          </form>
