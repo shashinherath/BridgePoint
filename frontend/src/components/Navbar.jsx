@@ -34,7 +34,7 @@ export default function Navbar() {
                     {/* Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" */}
                     <a
                       href="#"
-                      className="rounded-md bg-orange-800 px-3 py-2 text-sm font-medium text-white"
+                      className="rounded-md bg-orange-700 px-3 py-2 text-sm font-medium text-white"
                     >
                       Home
                     </a>
