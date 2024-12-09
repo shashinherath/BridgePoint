@@ -2,6 +2,7 @@ import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { Link } from "react-router-dom";
 import Logo from "../assets/logo/logo.png";
 
 function classNames(...classes) {
@@ -33,7 +34,7 @@ export default function Navbar() {
                     {/* Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" */}
                     <a
                       href="#"
-                      className="rounded-md bg-orange-800 px-3 py-2 text-sm font-medium text-white"
+                      className="rounded-md bg-orange-700 px-3 py-2 text-sm font-medium text-white"
                     >
                       Home
                     </a>
@@ -93,12 +94,16 @@ export default function Navbar() {
               </div>
               <div className="hidden lg:ml-4 lg:block">
                 <div className="flex items-center space-x-4">
-                  <button className="bg-orange-700 hover:bg-orange-600 text-white py-1.5 px-4 rounded-lg font-semibold">
-                    Register
-                  </button>
-                  <button className="bg-orange-700 hover:bg-orange-600 text-white py-1.5 px-4 rounded-lg font-semibold">
-                    Login
-                  </button>
+                  <Link to="/register">
+                    <button className="bg-orange-700 hover:bg-orange-600 text-white py-1.5 px-4 rounded-lg font-semibold">
+                      Register
+                    </button>
+                  </Link>
+                  <Link to="/login">
+                    <button className="bg-orange-700 hover:bg-orange-600 text-white py-1.5 px-4 rounded-lg font-semibold">
+                      Login
+                    </button>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -138,20 +143,16 @@ export default function Navbar() {
             </div>
             <div className="border-t border-orange-700 pb-3 pt-4">
               <div className="mt-3 space-y-1 px-2">
-                <Disclosure.Button
-                  as="a"
-                  href="#"
-                  className="block rounded-md px-3 py-2 text-base font-medium text-orange-400 hover:bg-orange-700 hover:text-white"
-                >
-                  Register
-                </Disclosure.Button>
-                <Disclosure.Button
-                  as="a"
-                  href="#"
-                  className="block rounded-md px-3 py-2 text-base font-medium text-orange-400 hover:bg-orange-700 hover:text-white"
-                >
-                  Login
-                </Disclosure.Button>
+                <Link to="/register">
+                  <Disclosure.Button className="block rounded-md px-3 py-2 text-base font-medium text-orange-400 hover:bg-orange-700 hover:text-white">
+                    Register
+                  </Disclosure.Button>
+                </Link>
+                <Link to="/login">
+                  <Disclosure.Button className="block rounded-md px-3 py-2 text-base font-medium text-orange-400 hover:bg-orange-700 hover:text-white">
+                    Login
+                  </Disclosure.Button>
+                </Link>
               </div>
             </div>
           </Disclosure.Panel>
