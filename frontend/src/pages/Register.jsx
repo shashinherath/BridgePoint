@@ -30,34 +30,34 @@ const Register = () => {
           <div className="grid grid-cols-2 gap-4">
           
           <div>
-            <label className="block text-sm font-medium">Full Name</label>
+          <label className="text-gray-600 text-base font-medium">Full Name</label>
             <input type="text"  placeholder="First Name" className="mt-1 block w-full px-4 py-2 border border-gray-500 rounded-lg outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500" />    
           </div>
           <div>
-            <input type="text" placeholder="Last Name" className="mt-6 block w-full px-4 py-2 border border-gray-500 rounded-lg outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"/>   
+            <input type="text" placeholder="Last Name" className="mt-7 block w-full px-4 py-2 border border-gray-500 rounded-lg outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"/>   
           </div>
 
          
           <div>
-            <label className="block text-sm font-medium">Mobile Number</label>
+          <label className="text-gray-600 text-base font-medium">Mobile Number</label>
             <input type="tel" placeholder="+94" className="mt-1 block w-full px-4 py-2 border border-gray-500 rounded-lg outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"/>
           </div>
 
         
           <div>
-            <label className="block text-sm font-medium">Email</label>
+          <label className="text-gray-600 text-base font-medium">email</label>
             <input type="email" placeholder="ex: ict21067@std.uwu.ac.lk" className="mt-1 block w-full px-4 py-2 border border-gray-500 rounded-lg outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"/>
           </div>
 
          
           <div>
-            <label className="block text-sm font-medium">Password</label>
+          <label className="text-gray-600 text-base font-medium">Password</label>
             <input type="password" className="mt-1 block w-full px-4 py-2 border border-gray-500 rounded-lg outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"/>
           </div>
 
          
           <div>
-            <label className="block text-sm font-medium">Confirm Password</label>
+          <label className="text-gray-600 text-base font-medium">Confirm Password</label>
             <input type="password" className="mt-1 block w-full px-4 py-2 border border-gray-500 rounded-lg outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"/>
           </div>
         </div>
