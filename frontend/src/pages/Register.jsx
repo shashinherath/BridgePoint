@@ -64,11 +64,11 @@ const Register = () => {
   return (
     <div className="flex h-screen">
       {/* Left Section */}
-      <div className="flex flex-1 flex-col justify-center py-12 px-4 sm:px-6 lg:w-1/2 lg:flex-none lg:px-20 xl:px-24 overflow-y-auto">
-        <div className="flex justify-center">
-          <img src={Logo2} alt="Bridge Point Logo" className="w-52 mb-4" />
+      <div className="flex flex-1 flex-col justify-start py-12 px-4 sm:px-6 lg:w-1/2 lg:flex-none lg:px-20 xl:px-24 overflow-y-auto">
+        <div className="flex justify-center mt-8">
+          <img src={Logo2} alt="Bridge Point Logo" className="w-52" />
         </div>
-        <p className="text-center text-gray-700 text-lg md:text-xl px-3">
+        <p className="text-center text-gray-700 text-lg md:text-xl px-3 mt-4">
           {isServiceProvider
             ? "Join BridgePoint as a seller and connect with a thriving community eager for your services. Register today and expand your opportunities!"
             : "Unlock your potential at BridgePoint - A vibrant community of growth and endless opportunities!"}
