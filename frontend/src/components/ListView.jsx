@@ -1,27 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import RicenCurry from "../assets/images/food/RicenCurry.png";
 
-const ListView = () => {
-  const [showPopup, setShowPopup] = useState(false);
+const ListView = ({ setShowPopup }) => {
   const [rating, setRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
   const [shopRating, setShopRating] = useState(3.5); // Initial shop rating
   const [ratingCount, setRatingCount] = useState(1); // Initial rating count
 
-  const openPopup = () => {
-    setShowPopup(true);
-  };
-
   const closePopup = () => {
-    setShowPopup(false);
-    setRating(0); // Reset rating when closing the popup
-    setHoverRating(0); // Reset hover rating when closing the popup
+    setShowPopup(false); // Use the passed function to close the popup
   };
 
   const handleRating = (value) => {
-    // Calculate the new shop rating
     const newRatingCount = ratingCount + 1;
-    const newShopRating = ((shopRating * ratingCount) + value) / newRatingCount;
+    const newShopRating = (shopRating * ratingCount + value) / newRatingCount;
 
     setRating(value);
     setShopRating(newShopRating);
@@ -43,13 +35,25 @@ const ListView = () => {
 
     const stars = [];
     for (let i = 1; i <= fullStars; i++) {
-      stars.push(<span key={`full-${i}`} className="text-yellow-500">★</span>);
+      stars.push(
+        <span key={`full-${i}`} className="text-yellow-500">
+          ★
+        </span>
+      );
     }
     if (halfStar) {
-      stars.push(<span key="half" className="text-yellow-300">★</span>);
+      stars.push(
+        <span key="half" className="text-yellow-300">
+          ★
+        </span>
+      );
     }
     for (let i = 1; i <= emptyStars; i++) {
-      stars.push(<span key={`empty-${i}`} className="text-gray-300">★</span>);
+      stars.push(
+        <span key={`empty-${i}`} className="text-gray-300">
+          ★
+        </span>
+      );
     }
     return (
       <div className="flex items-center">
@@ -61,66 +65,71 @@ const ListView = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <button
-        className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
-        onClick={openPopup}
-      >
-        Order Food
-      </button>
-      {showPopup && (
-        <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center">
-          <div className="bg-white rounded-lg max-w-3xl p-6 relative shadow-lg flex">
-            <button
-              className="absolute top-2 right-5 text-2xl text-gray-500 hover:text-black"
-              onClick={closePopup}
-            >
+      <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center">
+        <div className="bg-white rounded-lg max-w-3xl p-6 relative shadow-lg flex">
+          <button
+            className="absolute top-2 right-5 text-2xl text-gray-500 hover:text-black"
+            onClick={closePopup}
+          >
+            x <i className="fas fa-times"></i>
+          </button>
 
-x              <i className="fas fa-times"></i>
-            </button>
-
-
-            {/* Photo Segment */}
-            <div className="w-1/3 p-4">
-              <img src={RicenCurry} alt="Delicious Food" className="w-full h-auto rounded-lg object-cover" />
-            </div>
-            {/* Food Details Segment */}
-            <div className="w-1/3 p-4">
-              <h2 className="text-3xl font-bold text-gray-800 mb-4">Rice & Curry</h2>
-              <p className="text-lg text-gray-500 mb-3">
-                Samba rice with carrots and onion salad, roasted eggplant curry, leeks and red lentils and roasted chickpeas
-              </p>
-              <p className="text-lg text-green-700 mb-1">Price: Rs. 150.00</p>
-              <p className="text-lg text-blue-700">Portion size: 1 Person</p>
-            </div>
-            {/* Other Information Segment */}
-            <div className="w-1/3 p-4">
-              <div className="mb-2">{<br />}
-                <h1 className="text-4xl font-bold text-gray-800 mb-3 text-center">CDK</h1>
-                <div className="flex items-center justify-center space-x-2 mb-2">
-                  <span className="text-gray-500 text-lg">Shop Rating:</span>
-                  {renderStarRating(shopRating)}
-                </div>
-                <div className="flex justify-center items-center space-x-3 mb-3 text-2xl">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <span
-                      key={star}
-                      className={`cursor-pointer ${hoverRating >= star || rating >= star ? 'text-yellow-500' : 'text-gray-300'}`}
-                      onClick={() => handleRating(star)}
-                      onMouseEnter={() => handleMouseEnter(star)}
-                      onMouseLeave={handleMouseLeave}
-                    >
-                      ★
-                    </span>
-                  ))}
-                </div>
+          {/* Photo Segment */}
+          <div className="w-1/3 p-4">
+            <img
+              src={RicenCurry}
+              alt="Delicious Food"
+              className="w-full h-auto rounded-lg object-cover"
+            />
+          </div>
+          {/* Food Details Segment */}
+          <div className="w-1/3 p-4">
+            <h2 className="text-3xl font-bold text-gray-800 mb-4">
+              Rice & Curry
+            </h2>
+            <p className="text-lg text-gray-500 mb-3">
+              Samba rice with carrots and onion salad, roasted eggplant curry,
+              leeks and red lentils and roasted chickpeas
+            </p>
+            <p className="text-lg text-green-700 mb-1">Price: Rs. 150.00</p>
+            <p className="text-lg text-blue-700">Portion size: 1 Person</p>
+          </div>
+          {/* Other Information Segment */}
+          <div className="w-1/3 p-4">
+            <div className="mb-2">
+              <h1 className="text-4xl font-bold text-gray-800 mb-3 text-center">
+                CDK
+              </h1>
+              <div className="flex items-center justify-center space-x-2 mb-2">
+                <span className="text-gray-500 text-lg">Shop Rating:</span>
+                {renderStarRating(shopRating)}
               </div>
-              <div className="text-center">
-                <button className="bg-orange-700 text-white py-1 px-2 rounded hover:bg-orange-800">View Shop</button>
+              <div className="flex justify-center items-center space-x-3 mb-3 text-2xl">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <span
+                    key={star}
+                    className={`cursor-pointer ${
+                      hoverRating >= star || rating >= star
+                        ? "text-yellow-500"
+                        : "text-gray-300"
+                    }`}
+                    onClick={() => handleRating(star)}
+                    onMouseEnter={() => handleMouseEnter(star)}
+                    onMouseLeave={handleMouseLeave}
+                  >
+                    ★
+                  </span>
+                ))}
               </div>
+            </div>
+            <div className="text-center">
+              <button className="bg-orange-700 text-white py-1 px-2 rounded hover:bg-orange-800">
+                View Shop
+              </button>
             </div>
           </div>
         </div>
-      )}
+      </div>
     </div>
   );
 };
