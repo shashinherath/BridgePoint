@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import ListView from "./ListView";
+import RicenCurry from "../assets/images/food/RicenCurry.png";
+
 
 export default function BrowseList() {
   const [showPopup, setShowPopup] = useState(false);
@@ -19,7 +21,7 @@ export default function BrowseList() {
             className="bg-white w-72 h-64 m-4 rounded-lg shadow-xl"
           >
             <img
-              src="https://via.placeholder.com/150"
+              src={RicenCurry}
               alt="food"
               className="w-full h-32 object-cover"
             />
