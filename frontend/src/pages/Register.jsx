@@ -70,7 +70,7 @@ const Register = () => {
         </div>
         <p className="text-center text-gray-700 text-lg md:text-xl px-3 mt-4">
           {isServiceProvider
-            ? "Join BridgePoint as a seller and connect with a thriving community eager for your services. Register today and expand your opportunities!"
+            ? "Join BridgePoint as a seller and connect with a thriving community eager for your services!"
             : "Unlock your potential at BridgePoint - A vibrant community of growth and endless opportunities!"}
         </p>
         <div className="flex justify-center items-center mt-4">

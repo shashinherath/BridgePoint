@@ -6,9 +6,9 @@ function App() {
   return (
     <div className="flex h-screen">
       {/* Left Section */}
-      <div className="flex flex-1 flex-col justify-center py-12 px-4 sm:px-6 lg:w-1/2 lg:flex-none lg:px-20 xl:px-24">
+      <div className="flex flex-1 flex-col justify-start py-4 px-4 sm:px-6 lg:w-1/2 lg:flex-none lg:px-20 xl:px-24">
         <div className="flex justify-center">
-          <img src={Logo2} alt="Bridge Point Logo" className="w-52 mb-4" />
+          <img src={Logo2} alt="Bridge Point Logo" className="w-52" />
         </div>
         <h1 className="text-center text-4xl font-bold mb-2">
           Welcome to BridgePoint
