@@ -91,20 +91,27 @@ const ListView = ({ setShowPopup }) => {
               Samba rice with carrots and onion salad, roasted eggplant curry,
               leeks and red lentils and roasted chickpeas
             </p>
-            <p className="text-lg text-green-700 mb-1">Price: Rs. 150.00</p>
+            <p className="text-lg font-bold text-green-700 mb-1">Price: Rs. 150.00</p>
             <p className="text-lg text-blue-700">Portion size: 1 Person</p>
           </div>
           {/* Other Information Segment */}
           <div className="w-1/3 p-4">
             <div className="mb-2">
-              <h1 className="text-4xl font-bold text-gray-800 mb-3 text-center">
+            <h1 className="text-4xl font-bold text-gray-800 mb-2 text-center">
                 CDK
               </h1>
+            <h4 className="text-xl font-semibold text-gray-800 mb-1 text-center">
+                Contact Details:
+              </h4>
+              <p className="text-lg text-gray-700 mb-4 text-center">
+                0710849736
+              </p>
+              
               <div className="flex items-center justify-center space-x-2 mb-2">
                 <span className="text-gray-500 text-lg">Shop Rating:</span>
                 {renderStarRating(shopRating)}
               </div>
-              <div className="flex justify-center items-center space-x-3 mb-3 text-2xl">
+              <div className="flex justify-center items-center space-x-3 mb-4 text-2xl">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <span
                     key={star}
