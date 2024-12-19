@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import RicenCurry from "../assets/images/food/RicenCurry.png";
+import { Link } from "react-router-dom";
 
 const ListView = ({ setShowPopup }) => {
   const [rating, setRating] = useState(0);
@@ -97,16 +98,16 @@ const ListView = ({ setShowPopup }) => {
           {/* Other Information Segment */}
           <div className="w-1/3 p-4">
             <div className="mb-2">
-            <h1 className="text-4xl font-bold text-gray-800 mb-2 text-center">
+              <h1 className="text-4xl font-bold text-gray-800 mb-2 text-center">
                 CDK
               </h1>
-            <h4 className="text-xl font-semibold text-gray-800 mb-1 text-center">
+              <h4 className="text-xl font-semibold text-gray-800 mb-1 text-center">
                 Contact Details:
               </h4>
               <p className="text-lg text-gray-700 mb-4 text-center">
                 0710849736
               </p>
-              
+
               <div className="flex items-center justify-center space-x-2 mb-2">
                 <span className="text-gray-500 text-lg">Shop Rating:</span>
                 {renderStarRating(shopRating)}
@@ -115,11 +116,10 @@ const ListView = ({ setShowPopup }) => {
                 {[1, 2, 3, 4, 5].map((star) => (
                   <span
                     key={star}
-                    className={`cursor-pointer ${
-                      hoverRating >= star || rating >= star
+                    className={`cursor-pointer ${hoverRating >= star || rating >= star
                         ? "text-yellow-500"
                         : "text-gray-300"
-                    }`}
+                      }`}
                     onClick={() => handleRating(star)}
                     onMouseEnter={() => handleMouseEnter(star)}
                     onMouseLeave={handleMouseLeave}
@@ -130,9 +130,11 @@ const ListView = ({ setShowPopup }) => {
               </div>
             </div>
             <div className="text-center">
-              <button className="bg-orange-700 text-white py-1 px-2 rounded hover:bg-orange-800">
-                View Shop
-              </button>
+              <Link to="/sellerview">
+                <button className="bg-orange-700 text-white py-1 px-2 rounded hover:bg-orange-800">
+                  View Shop
+                </button>
+              </Link>
             </div>
           </div>
         </div>
