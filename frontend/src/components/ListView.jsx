@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import RicenCurry from "../assets/images/food/RicenCurry.png";
 import { Link } from "react-router-dom";
+import { FaTimes } from 'react-icons/fa';
 
 const ListView = ({ setShowPopup }) => {
   const [rating, setRating] = useState(0);
@@ -67,12 +68,12 @@ const ListView = ({ setShowPopup }) => {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center">
-        <div className="bg-white rounded-lg max-w-3xl p-6 relative shadow-lg flex">
+        <div className="bg-white rounded-xl max-w-3xl p-6 relative shadow-lg flex transform transition-transform duration-300 hover:scale-105">
           <button
-            className="absolute top-2 right-5 text-2xl text-gray-500 hover:text-black"
+            className="absolute top-2 right-5 text-2xl text-gray-500 hover:text-black transition duration-300"
             onClick={closePopup}
           >
-            x <i className="fas fa-times"></i>
+            <FaTimes />
           </button>
 
           {/* Photo Segment */}
@@ -80,7 +81,7 @@ const ListView = ({ setShowPopup }) => {
             <img
               src={RicenCurry}
               alt="Delicious Food"
-              className="w-full h-auto rounded-lg object-cover"
+              className="w-full h-auto rounded-lg object-cover shadow-lg"
             />
           </div>
           {/* Food Details Segment */}
@@ -92,7 +93,9 @@ const ListView = ({ setShowPopup }) => {
               Samba rice with carrots and onion salad, roasted eggplant curry,
               leeks and red lentils and roasted chickpeas
             </p>
-            <p className="text-lg font-bold text-green-700 mb-1">Price: Rs. 150.00</p>
+            <p className="text-lg font-bold text-green-700 mb-1">
+              Price: Rs. 150.00
+            </p>
             <p className="text-lg text-blue-700">Portion size: 1 Person</p>
           </div>
           {/* Other Information Segment */}
@@ -117,9 +120,9 @@ const ListView = ({ setShowPopup }) => {
                   <span
                     key={star}
                     className={`cursor-pointer ${hoverRating >= star || rating >= star
-                        ? "text-yellow-500"
-                        : "text-gray-300"
-                      }`}
+                      ? "text-yellow-500"
+                      : "text-gray-300"
+                      } transition duration-300 hover:scale-125`}
                     onClick={() => handleRating(star)}
                     onMouseEnter={() => handleMouseEnter(star)}
                     onMouseLeave={handleMouseLeave}
@@ -131,7 +134,7 @@ const ListView = ({ setShowPopup }) => {
             </div>
             <div className="text-center">
               <Link to="/sellerview">
-                <button className="bg-orange-700 text-white py-1 px-2 rounded hover:bg-orange-800">
+                <button className="bg-orange-700 text-white py-1 px-2 rounded hover:bg-orange-800 transition duration-300 transform hover:scale-110">
                   View Shop
                 </button>
               </Link>
