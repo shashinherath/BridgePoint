@@ -1,5 +1,3 @@
-const Service = require("../models/Service");
-
 // Create Service
 const createService = async (req, res) => {
   const { title, description, provider } = req.body;
