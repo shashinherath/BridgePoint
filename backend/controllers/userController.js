@@ -1,5 +1,3 @@
-const User = require("../models/User");
-
 // function for delete an user
 const deleteUser = async (req, res) => {
   const { id } = req.body;
