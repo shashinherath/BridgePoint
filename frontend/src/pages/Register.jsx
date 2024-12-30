@@ -1,10 +1,15 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import Logo2 from "../assets/logo/Logo2.png";
 import background from "../assets/images/Background.jpg";
 
 const Register = () => {
-  const backendUrl = "http://localhost:5000";
+  const backendUrl =
+    process.env.NODE_ENV === "development"
+      ? "http://localhost:5000"
+      : process.env.Backend_URL;
+  const navigate = useNavigate();
   const [isServiceProvider, setIsServiceProvider] = useState(false);
   const [formData, setFormData] = useState({
     firstname: "",
@@ -31,7 +36,7 @@ const Register = () => {
       } else {
         await registerStudent(formData);
       }
-      alert("Registration successful!");
+      navigate("/login");
     } catch (error) {
       alert(`Registration failed: ${error.message}`);
     }
