@@ -1,8 +1,50 @@
 import React from "react";
 import Logo2 from "../assets/logo/Logo2.png";
 import background from "../assets/images/Background.jpg";
+import axios from "axios";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function App() {
+  const backendUrl =
+    process.env.NODE_ENV === "development"
+      ? "http://localhost:5000"
+      : process.env.Backend_URL;
+
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post(
+        `${backendUrl}/api/auth/login`,
+        formData
+      );
+
+      const data = response.data;
+      localStorage.setItem("userType", data.user.user_type);
+      localStorage.setItem("token", data.token);
+
+      if (data.user.user_type === "student") {
+        navigate("/");
+      } else if (data.user.user_type === "serviceprovider") {
+        navigate("/dashboard");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div className="flex h-screen">
       {/* Left Section */}
@@ -18,13 +60,16 @@ function App() {
           connections and endless opportunities with BridgePoint!
         </p>
 
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="mb-4 mt-4">
             <label className="text-gray-600 text-base font-medium">
               Username
             </label>
             <input
-              type="text"
+              type="email"
+              name="email"
+              onChange={handleChange}
+              value={formData.email}
               className="mt-1 block w-full px-4 py-2 border border-gray-500 rounded-lg outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
               placeholder="Enter your username"
             />
@@ -36,6 +81,9 @@ function App() {
             </label>
             <input
               type="password"
+              name="password"
+              onChange={handleChange}
+              value={formData.password}
               className="mt-1 block w-full px-4 py-2 border border-gray-500 rounded-lg outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
               placeholder="Enter your password"
             />
@@ -46,7 +94,10 @@ function App() {
             <label className="text-gray-700">Remember me</label>
           </div>
 
-          <button className="w-full p-3 bg-orange-600 text-white text-base font-bold rounded-lg hover:bg-orange-700">
+          <button
+            className="w-full p-3 bg-orange-600 text-white text-base font-bold rounded-lg hover:bg-orange-700"
+            type="submit"
+          >
             Log in
           </button>
         </form>
