@@ -204,36 +204,60 @@ const updateItem = async (req, res) => {
   const { id } = req.params;
   const providerId = req.user.id;
   const { name, description, portionSize, price } = req.body;
-  const image = req.file ? req.file.filename : null;
+  const image = req.file ? req.file.filename : undefined;
 
   try {
+    let existingItem;
     let updatedItem;
+    const updateData = {
+      ...(name && { name }),
+      ...(description && { description }),
+      ...(portionSize && { portionSize }),
+      ...(price && { price }),
+      ...(image && { image }),
+    };
     switch (providedservice) {
       case "Food":
+        existingItem = await Food.findOne({ providerId, _id: id });
+        if (!existingItem) {
+          return res.status(404).json({ message: "Item not found" });
+        }
         updatedItem = await Food.findOneAndUpdate(
           { providerId, _id: id },
-          { name, description, portionSize, price, image },
+          updateData,
           { new: true }
         );
         break;
       case "Accommodation":
+        existingItem = await Accommodation.findOne({ providerId, _id: id });
+        if (!existingItem) {
+          return res.status(404).json({ message: "Item not found" });
+        }
         updatedItem = await Accommodation.findOneAndUpdate(
           { providerId, _id: id },
-          { name, description, price, image },
+          updateData,
           { new: true }
         );
         break;
       case "Guide":
+        existingItem = await Guide.findOne({ providerId, _id: id });
+        if (!existingItem) {
+          return res.status(404).json({ message: "Item not found" });
+        }
         updatedItem = await Guide.findOneAndUpdate(
           { providerId, _id: id },
-          { name, description, price, image },
+          updateData,
           { new: true }
         );
         break;
       case "Ride":
+        existingItem = await Ride.findOne({ providerId, _id: id });
+        if (!existingItem) {
+          return res.status(404).json({ message: "Item not found" });
+        }
         updatedItem = await Ride.findOneAndUpdate(
           { providerId, _id: id },
-          { name, description, price, image },
+          updateData,
           { new: true }
         );
         break;
@@ -245,7 +269,21 @@ const updateItem = async (req, res) => {
       return res.status(404).json({ message: "Item not found" });
     }
 
-    const imageUrl = image ? `/uploads/${image}` : null;
+    // Delete old image if new one is uploaded
+    if (image && existingItem.image && existingItem.image !== image) {
+      const oldImagePath = path.join(
+        __dirname,
+        "../uploads",
+        existingItem.image
+      );
+      fs.unlink(oldImagePath, (err) => {
+        if (err) {
+          console.error("Error deleting old image file:", err);
+        }
+      });
+    }
+
+    const imageUrl = updatedItem.image ? `/uploads/${updatedItem.image}` : null;
     res.status(200).json({ ...updatedItem._doc, imageUrl });
   } catch (error) {
     res.status(500).json({ message: "Error updating item", error });
