@@ -1,6 +1,14 @@
 import React, { useState } from "react";
+import axios from "axios";
 
 export default function AddItemPopup({ onClose, onAddItem }) {
+  const backendUrl =
+    process.env.NODE_ENV === "development"
+      ? "http://localhost:5000"
+      : process.env.Backend_URL;
+
+  const token = localStorage.getItem("token");
+
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [image, setImage] = useState(null);
@@ -8,21 +16,34 @@ export default function AddItemPopup({ onClose, onAddItem }) {
   const [portionSize, setPortionSize] = useState("");
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const newItem = {
-      name,
-      price,
-      image,
-      description,
-      portionSize,
-    };
-    onAddItem(newItem);
-    setShowSuccessMessage(true);
-    setTimeout(() => {
-      setShowSuccessMessage(false);
-      onClose();
-    }, 2000);
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("price", price);
+    formData.append("image", image);
+    formData.append("description", description);
+    formData.append("portionSize", portionSize);
+
+    try {
+      const response = await axios.post(
+        `${backendUrl}/api/services/additem`,
+        formData,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+      onAddItem(response.data);
+      setShowSuccessMessage(true);
+      setTimeout(() => {
+        setShowSuccessMessage(false);
+        onClose();
+      }, 2000);
+    } catch (error) {
+      console.error("Error adding item:", error);
+    }
   };
 
   return (
@@ -33,10 +54,14 @@ export default function AddItemPopup({ onClose, onAddItem }) {
             Item added successfully!
           </div>
         )}
-        <h2 className="text-xl font-semibold text-gray-800 mb-4">Add New Item</h2>
+        <h2 className="text-xl font-semibold text-gray-800 mb-4">
+          Add New Item
+        </h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Name</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Name
+            </label>
             <input
               type="text"
               value={name}
@@ -46,7 +71,9 @@ export default function AddItemPopup({ onClose, onAddItem }) {
             />
           </div>
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Price (LKR)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Price (LKR)
+            </label>
             <input
               type="number"
               value={price}
@@ -56,7 +83,9 @@ export default function AddItemPopup({ onClose, onAddItem }) {
             />
           </div>
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Image</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Image
+            </label>
             <input
               type="file"
               onChange={(e) => setImage(e.target.files[0])}
@@ -65,7 +94,9 @@ export default function AddItemPopup({ onClose, onAddItem }) {
             />
           </div>
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Description
+            </label>
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
@@ -74,7 +105,9 @@ export default function AddItemPopup({ onClose, onAddItem }) {
             />
           </div>
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Portion Size</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Portion Size
+            </label>
             <select
               value={portionSize}
               onChange={(e) => setPortionSize(e.target.value)}
