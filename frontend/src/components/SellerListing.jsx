@@ -1,52 +1,44 @@
-import React, { useState } from "react";
-import RiceAndCurry from "../assets/images/food/RiceAndCurry.png";
-import Kottu from "../assets/images/food/Kottu.png";
-import StringHoppers from "../assets/images/food/StringHoppers.png";
-import EggHoppers from "../assets/images/food/EggHoppers.png";
-import Noodles from "../assets/images/food/Noodles.png";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { PlusIcon } from "@heroicons/react/24/outline";
 import AddItemPopup from "./AddItemPopup";
 import ItemPopup from "./ItemPopup";
 
 const SellerListing = () => {
-  const initialFood = [
-    {
-      name: "Rice and Curry",
-      image: RiceAndCurry,
-      price: 150,
-      description: "Samba rice with 3 vegetable curries and fish curry",
-    },
-    {
-      name: "Kottu",
-      image: Kottu,
-      price: 350,
-      description: "Delicious Kottu with vegetables and spices",
-    },
-    {
-      name: "String Hoppers",
-      image: StringHoppers,
-      price: 200,
-      description: "Traditional String Hoppers with coconut sambol and dhal curry",
-    },
-    {
-      name: "Egg Hoppers",
-      image: EggHoppers,
-      price: 250,
-      description: "Crispy Egg Hoppers with lunu miris",
-    },
-    {
-      name: "Noodles",
-      image: Noodles,
-      price: 200,
-      description: "Stir-fried noodles with vegetables",
-    },
-  ];
+  const backendUrl =
+    process.env.NODE_ENV === "development"
+      ? "http://localhost:5000"
+      : process.env.Backend_URL;
 
-  const [food, setFood] = useState(initialFood);
+  const token = localStorage.getItem("token");
+
+  const [foodItems, setFoodItems] = useState([]);
+
+  useEffect(() => {
+    const fetchFoodItems = async () => {
+      try {
+        const response = await axios.get(
+          `${backendUrl}/api/services/getitems`,
+          {
+            headers: {
+              Authorization: token,
+            },
+          }
+        );
+        setFoodItems(response.data);
+      } catch (error) {
+        console.error("Error fetching food items:", error);
+      }
+    };
+
+    fetchFoodItems();
+  }, []);
+
+  const [food, setFood] = useState(foodItems);
   const [selectedItem, setSelectedItem] = useState(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isAddPopupOpen, setIsAddPopupOpen] = useState(false); // State for AddItemPopup
-  const [message, setMessage] = useState(''); // State for the message
+  const [message, setMessage] = useState(""); // State for the message
   const [showMessage, setShowMessage] = useState(false); // To control the sliding animation
   const [animationClass, setAnimationClass] = useState(""); // State for the animation class
 
@@ -73,7 +65,7 @@ const SellerListing = () => {
   const handleAddItem = (newItem) => {
     setFood([...food, newItem]);
     setIsAddPopupOpen(false);
-    setMessage('Item added successfully!');
+    setMessage("Item added successfully!");
     setShowMessage(true); // Show the message with animation
 
     // Apply the animation class
@@ -82,7 +74,7 @@ const SellerListing = () => {
     // Hide the message after 3 seconds
     setTimeout(() => {
       setShowMessage(false);
-      setMessage('');
+      setMessage("");
       setAnimationClass(""); // Reset animation
     }, 3000);
   };
@@ -100,11 +92,15 @@ const SellerListing = () => {
         </div>
       )}
       <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-4 gap-y-8 justify-items-center px-4 sm:px-8 md:px-16 lg:px-32 xl:px-64 place-items-center pt-10">
-        {food.map((item, i) => (
-          <div key={i} onClick={() => handleItemClick(item)} className="cursor-pointer">
+        {foodItems.map((item, i) => (
+          <div
+            key={i}
+            onClick={() => handleItemClick(item)}
+            className="cursor-pointer"
+          >
             <div className="rounded-full h-24 w-24 sm:h-32 sm:w-32 md:h-40 md:w-40 lg:h-48 lg:w-48 bg-gray-300 flex items-center justify-center cursor-pointer">
               <img
-                src={item.image}
+                src={backendUrl + item.imageUrl}
                 alt={item.name}
                 className="h-16 w-16 sm:h-24 sm:w-24 md:h-32 md:w-32 lg:h-40 lg:w-40"
               />
