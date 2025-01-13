@@ -1,9 +1,5 @@
-import React, { useState } from "react";
-import RiceAndCurry from "../assets/images/food/RiceAndCurry.png";
-import Kottu from "../assets/images/food/Kottu.png";
-import StringHoppers from "../assets/images/food/StringHoppers.png";
-import EggHoppers from "../assets/images/food/EggHoppers.png";
-import Noodles from "../assets/images/food/Noodles.png";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 const ItemPopup = ({ item, onClose, onEdit, onDelete, onAdd }) => {
   // Add onAdd prop
@@ -14,10 +10,24 @@ const ItemPopup = ({ item, onClose, onEdit, onDelete, onAdd }) => {
       ? "http://localhost:5000"
       : process.env.Backend_URL;
 
-  const [isEditing, setIsEditing] = useState(false);
-  const [editedItem, setEditedItem] = useState({ ...item });
+  const token = localStorage.getItem("token");
+
+  const [name, setName] = useState("");
+  const [price, setPrice] = useState("");
+  const [image, setImage] = useState(null);
+  const [description, setDescription] = useState("");
   const [portionSize, setPortionSize] = useState("");
+
+  const [isEditing, setIsEditing] = useState(false);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+  const [deleteId, setDeleteId] = useState("");
+
+  useEffect(() => {
+    setName(item.name);
+    setPrice(item.price);
+    setDescription(item.description);
+    setPortionSize(item.portionSize);
+  }, [item]);
 
   const handleOutsideClick = (e) => {
     if (e.target === e.currentTarget) {
@@ -25,55 +35,61 @@ const ItemPopup = ({ item, onClose, onEdit, onDelete, onAdd }) => {
     }
   };
 
-  const handlePortionChange = (e) => {
-    setPortionSize(e.target.value);
-  };
-
   const handleEditClick = () => {
     setIsEditing(true);
   };
 
-  const handleSaveClick = () => {
-    onEdit(editedItem);
-    setIsEditing(false);
-  };
+  const handleSaveClick = async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("price", price);
+    if (image !== null) formData.append("image", image);
+    formData.append("description", description);
+    formData.append("portionSize", portionSize);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setEditedItem((prevItem) => ({
-      ...prevItem,
-      [name]: value,
-    }));
+    try {
+      const response = await axios.put(
+        `${backendUrl}/api/services/updateitem/${item._id}`,
+        formData,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+      onEdit(response.data);
+      setIsEditing(false);
+    } catch (error) {
+      console.error("Error editing item:", error);
+    }
   };
 
   const handleDeleteClick = () => {
+    setDeleteId(item._id);
     setShowDeleteConfirmation(true);
   };
 
-  const confirmDelete = () => {
-    onDelete();
+  const confirmDelete = async () => {
+    try {
+      const response = await axios.delete(
+        `${backendUrl}/api/services/deleteitem/${deleteId}`,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+      onDelete(deleteId);
+      setDeleteId("");
+    } catch (error) {
+      console.error("Error deleting item:", error);
+    }
     setShowDeleteConfirmation(false);
   };
 
   const cancelDelete = () => {
     setShowDeleteConfirmation(false);
-  };
-
-  const getImage = (itemName) => {
-    switch (itemName) {
-      case "Rice and Curry":
-        return RiceAndCurry;
-      case "Kottu":
-        return Kottu;
-      case "String Hoppers":
-        return StringHoppers;
-      case "Egg Hoppers":
-        return EggHoppers;
-      case "Noodles":
-        return Noodles;
-      default:
-        return "";
-    }
   };
 
   return (
@@ -86,43 +102,68 @@ const ItemPopup = ({ item, onClose, onEdit, onDelete, onAdd }) => {
         {/* Set fixed width */}
         {isEditing ? (
           <>
-            <input
-              type="text"
-              name="name"
-              value={editedItem.name}
-              onChange={handleChange}
-              className="w-full mb-4 border rounded p-2"
-              placeholder="Item Name"
-            />
-            <input
-              type="text"
-              name="price"
-              value={editedItem.price}
-              onChange={handleChange}
-              className="w-full mb-4 border rounded p-2"
-              placeholder="Item Price"
-            />
-            <textarea
-              name="description"
-              value={editedItem.description}
-              onChange={handleChange}
-              className="w-full mb-4 border rounded p-2"
-              placeholder="Item Description"
-            />
-            <label htmlFor="portionSize" className="block text-gray-700 mb-2">
-              Select Portion Size:
-            </label>
-            <select
-              id="portionSize"
-              value={editedItem.portionSize}
-              onChange={handlePortionChange}
-              className="mb-4 border rounded"
-            >
-              <option value="">Select size</option>
-              <option value="small">1 Person</option>
-              <option value="medium">2 Person</option>
-              <option value="large">3 Person</option>
-            </select>
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Name
+              </label>
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 transition duration-300"
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Price (LKR)
+              </label>
+              <input
+                type="number"
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 transition duration-300"
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Image
+              </label>
+              <input
+                type="file"
+                onChange={(e) => setImage(e.target.files[0])}
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 transition duration-300"
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Description
+              </label>
+              <textarea
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 transition duration-300"
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Portion Size
+              </label>
+              <select
+                value={portionSize}
+                onChange={(e) => setPortionSize(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 transition duration-300"
+                required
+              >
+                <option value="">Select Portion Size</option>
+                <option value="1 person">1 person</option>
+                <option value="2 person">2 person</option>
+                <option value="3 person">3 person</option>
+              </select>
+            </div>
             <div className="flex justify-end space-x-4">
               <button
                 onClick={handleSaveClick}
