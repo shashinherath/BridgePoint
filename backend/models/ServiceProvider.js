@@ -46,6 +46,10 @@ const ServiceProviderSchema = new mongoose.Schema(
       type: String,
       default: "serviceprovider",
     },
+    profileImage: {
+      type: String,
+      default: "default-profile.png",
+    },
   },
   { timestamps: true }
 );
