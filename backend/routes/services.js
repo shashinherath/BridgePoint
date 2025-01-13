@@ -1,31 +1,43 @@
 const express = require("express");
 const {
-  createService,
-  getAllServices,
-  updateService,
-  deleteService,
+  addItem,
+  deleteItem,
+  getItemById,
+  getItems,
+  updateItem,
 } = require("../controllers/serviceController");
 const authMiddleware = require("../middleware/authMiddleware");
+const upload = require("../middleware/uploadMiddleware");
 const router = express.Router();
 
 // @route   POST /api/services
-// @desc    Create a new service
+// @desc    Add a service item
 // @access  Private
-router.post("/", authMiddleware, createService);
+router.post("/additem", authMiddleware, upload.single("image"), addItem);
 
-// @route   GET /api/services
-// @desc    Get all services
-// @access  Public
-router.get("/", getAllServices);
-
-// @route   PUT /api/services/:id
-// @desc    Update a service
+// @route   DELETE /api/services/deleteitem/:id
+// @desc    Delete a service item
 // @access  Private
-router.put("/:id", authMiddleware, updateService);
+router.delete("/deleteitem/:id", authMiddleware, deleteItem);
 
-// @route   DELETE /api/services/:id
-// @desc    Delete a service
+// @route   GET /api/services/getitem/:id
+// @desc    Get a service item by ID
 // @access  Private
-router.delete("/:id", authMiddleware, deleteService);
+router.get("/getitem/:id", authMiddleware, getItemById);
+
+// @route   GET /api/services/getitems
+// @desc    Get all service items
+// @access  Private
+router.get("/getitems", authMiddleware, getItems);
+
+// @route   PUT /api/services/updateitem/:id
+// @desc    Update a service item
+// @access  Private
+router.put(
+  "/updateitem/:id",
+  authMiddleware,
+  upload.single("image"),
+  updateItem
+);
 
 module.exports = router;
