@@ -1,17 +1,44 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 import Logo from "../assets/logo/logo.png";
-import UpdateProfile from './UpdateProfile';
+import UpdateProfile from "./UpdateProfile";
+import axios from "axios";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 export default function SellerNavbar() {
+  const backendUrl =
+    process.env.NODE_ENV === "development"
+      ? "http://localhost:5000"
+      : process.env.Backend_URL;
+
+  const token = localStorage.getItem("token");
+
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [userData, setUserData] = useState({});
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${backendUrl}/api/user/getuser`, {
+          headers: {
+            Authorization: token,
+          },
+        });
+        console.log("User data:", response.data);
+        setUserData(response.data);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleProfileClick = () => {
     setIsProfileOpen(true);
@@ -22,7 +49,7 @@ export default function SellerNavbar() {
   };
 
   const handleProfileSave = (formData) => {
-    console.log('Profile updated:', formData);
+    console.log("Profile updated:", formData);
     setIsProfileOpen(false);
   };
 
@@ -52,7 +79,9 @@ export default function SellerNavbar() {
                     <h1 className="text-3xl text-white font-extrabold">
                       Dashboard
                     </h1>
-                    <p className="text-xl text-white font-bold">Food Seller</p>
+                    <p className="text-xl text-white font-bold">
+                      {userData.providedservice} Seller
+                    </p>
                   </div>
                 </div>
 
@@ -98,7 +127,7 @@ export default function SellerNavbar() {
                           <span className="sr-only">Open user menu</span>
                           <img
                             className="h-8 w-8 rounded-full"
-                            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                            src={backendUrl + userData.profileImageUrl}
                             alt=""
                           />
                         </Menu.Button>
@@ -124,19 +153,6 @@ export default function SellerNavbar() {
                                 )}
                               >
                                 Your Profile
-                              </a>
-                            )}
-                          </Menu.Item>
-                          <Menu.Item>
-                            {({ active }) => (
-                              <a
-                                href="#"
-                                className={classNames(
-                                  active ? "bg-gray-100" : "",
-                                  "block px-4 py-2 text-sm text-gray-700"
-                                )}
-                              >
-                                Settings
                               </a>
                             )}
                           </Menu.Item>
@@ -198,16 +214,16 @@ export default function SellerNavbar() {
                   <div className="flex-shrink-0">
                     <img
                       className="h-10 w-10 rounded-full"
-                      src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                      src={backendUrl + userData.profileImageUrl}
                       alt=""
                     />
                   </div>
                   <div className="ml-3">
                     <div className="text-base font-medium text-white">
-                      Tom Cook
+                      {userData.companyname}
                     </div>
                     <div className="text-sm font-medium text-white">
-                      tom@example.com
+                      {userData.email}
                     </div>
                   </div>
                 </div>
@@ -215,16 +231,10 @@ export default function SellerNavbar() {
                   <Disclosure.Button
                     as="a"
                     href="#"
+                    onClick={handleProfileClick}
                     className="block rounded-md px-3 py-2 text-base font-medium text-white hover:bg-orange-700 hover:text-white"
                   >
                     Your Profile
-                  </Disclosure.Button>
-                  <Disclosure.Button
-                    as="a"
-                    href="#"
-                    className="block rounded-md px-3 py-2 text-base font-medium text-white hover:bg-orange-700 hover:text-white"
-                  >
-                    Settings
                   </Disclosure.Button>
                   <Disclosure.Button
                     as="a"
@@ -239,11 +249,12 @@ export default function SellerNavbar() {
           </>
         )}
       </Disclosure>
-      <UpdateProfile
-        isOpen={isProfileOpen}
-        onClose={handleProfileClose}
-        onSave={handleProfileSave}
-      />
+      {isProfileOpen && (
+        <UpdateProfile
+          onClose={handleProfileClose}
+          onSave={handleProfileSave}
+        />
+      )}
     </>
   );
 }
