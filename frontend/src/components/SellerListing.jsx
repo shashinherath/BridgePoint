@@ -13,34 +13,31 @@ const SellerListing = () => {
   const token = localStorage.getItem("token");
 
   const [foodItems, setFoodItems] = useState([]);
-
-  useEffect(() => {
-    const fetchFoodItems = async () => {
-      try {
-        const response = await axios.get(
-          `${backendUrl}/api/services/getitems`,
-          {
-            headers: {
-              Authorization: token,
-            },
-          }
-        );
-        setFoodItems(response.data);
-      } catch (error) {
-        console.error("Error fetching food items:", error);
-      }
-    };
-
-    fetchFoodItems();
-  }, []);
-
   const [food, setFood] = useState(foodItems);
   const [selectedItem, setSelectedItem] = useState(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [isAddPopupOpen, setIsAddPopupOpen] = useState(false); // State for AddItemPopup
-  const [message, setMessage] = useState(""); // State for the message
-  const [showMessage, setShowMessage] = useState(false); // To control the sliding animation
-  const [animationClass, setAnimationClass] = useState(""); // State for the animation class
+  const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
+  const [message, setMessage] = useState("");
+  const [showMessage, setShowMessage] = useState(false);
+  const [animationClass, setAnimationClass] = useState("");
+
+  const fetchFoodItems = async () => {
+    try {
+      const response = await axios.get(`${backendUrl}/api/services/getitems`, {
+        headers: {
+          Authorization: token,
+        },
+      });
+      setFoodItems(response.data);
+      setFood(response.data);
+    } catch (error) {
+      console.error("Error fetching food items:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchFoodItems();
+  }, []);
 
   const handleItemClick = (item) => {
     setSelectedItem(item);
@@ -54,11 +51,31 @@ const SellerListing = () => {
 
   const handleEditItem = (editedItem) => {
     console.log("Edited item:", editedItem);
+    fetchFoodItems();
+    setIsAddPopupOpen(false);
+    setMessage("Item updated successfully!");
+    setShowMessage(true);
+    setAnimationClass("slide-animation");
+    setTimeout(() => {
+      setShowMessage(false);
+      setMessage("");
+      setAnimationClass("");
+    }, 3000);
     handleClosePopup();
   };
 
-  const handleDeleteItem = () => {
-    console.log("Deleted item:", selectedItem);
+  const handleDeleteItem = (deleteId) => {
+    console.log("Deleted item:", deleteId);
+    fetchFoodItems();
+    setIsAddPopupOpen(false);
+    setMessage("Item deleted successfully!");
+    setShowMessage(true);
+    setAnimationClass("slide-animation");
+    setTimeout(() => {
+      setShowMessage(false);
+      setMessage("");
+      setAnimationClass("");
+    }, 3000);
     handleClosePopup();
   };
 
@@ -66,17 +83,14 @@ const SellerListing = () => {
     setFood([...food, newItem]);
     setIsAddPopupOpen(false);
     setMessage("Item added successfully!");
-    setShowMessage(true); // Show the message with animation
-
-    // Apply the animation class
+    setShowMessage(true);
     setAnimationClass("slide-animation");
-
-    // Hide the message after 3 seconds
     setTimeout(() => {
       setShowMessage(false);
       setMessage("");
-      setAnimationClass(""); // Reset animation
+      setAnimationClass("");
     }, 3000);
+    fetchFoodItems();
   };
 
   return (
