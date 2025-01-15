@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const ServiceProvider = require("./ServiceProvider");
 
 const FoodSchema = new mongoose.Schema({
   providerId: {
