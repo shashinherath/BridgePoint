@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import ListView from "./ListView";
 import axios from "axios";
 
-export default function BrowseList() {
+export default function BrowseList({ category }) {
   const backendUrl =
     process.env.NODE_ENV === "development"
       ? "http://localhost:5000"
@@ -11,7 +11,6 @@ export default function BrowseList() {
   const token = localStorage.getItem("token");
 
   const [items, setItems] = useState([]);
-  const [serviceType, setServiceType] = useState("Food");
   const [showPopup, setShowPopup] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
 
@@ -19,7 +18,7 @@ export default function BrowseList() {
     const fetchItems = async () => {
       try {
         const response = await axios.get(
-          `${backendUrl}/api/services/getitemsforstudents/${serviceType}`,
+          `${backendUrl}/api/services/getitemsforstudents/${category}`,
           {
             headers: {
               Authorization: token,
@@ -33,7 +32,7 @@ export default function BrowseList() {
     };
 
     fetchItems();
-  }, []);
+  }, [category]);
 
   const openPopup = (item) => {
     setSelectedItem(item);
@@ -54,7 +53,7 @@ export default function BrowseList() {
           <div className="bg-white w-72 h-64 m-4 rounded-lg shadow-xl">
             <img
               src={backendUrl + item.imageUrl}
-              alt="food"
+              alt="item"
               className="w-full h-32 object-cover"
             />
             <div className="p-4">
