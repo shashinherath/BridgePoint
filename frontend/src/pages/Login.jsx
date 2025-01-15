@@ -33,6 +33,7 @@ function App() {
 
       const data = response.data;
       localStorage.setItem("userType", data.user.user_type);
+      localStorage.setItem("providedservice", data.user.providedservice);
       localStorage.setItem("token", data.token);
 
       if (data.user.user_type === "student") {
