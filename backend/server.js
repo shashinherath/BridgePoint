@@ -1,5 +1,6 @@
 const express = require("express");
 const dotenv = require("dotenv");
+const cors = require("cors");
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/auth");
 const serviceRoutes = require("./routes/services");
@@ -16,6 +17,19 @@ const app = express();
 
 // Middleware to parse JSON requests
 app.use(express.json());
+
+// Custom CORS configuration
+const corsOptions = {
+  origin: process.env.Frontend_URL,
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  credentials: true,
+  optionsSuccessStatus: 204,
+};
+
+app.use(cors(corsOptions));
+
+// Serve static files from the "uploads" directory
+app.use("/uploads", express.static("uploads"));
 
 // Routes
 app.use("/api/auth", authRoutes);

@@ -1,31 +1,49 @@
 const express = require("express");
 const {
-  createService,
-  getAllServices,
-  updateService,
-  deleteService,
+  addItem,
+  deleteItem,
+  getItemById,
+  getItems,
+  updateItem,
+  getItemsForStudents,
 } = require("../controllers/serviceController");
 const authMiddleware = require("../middleware/authMiddleware");
+const upload = require("../middleware/uploadMiddleware");
 const router = express.Router();
 
 // @route   POST /api/services
-// @desc    Create a new service
+// @desc    Add a service item
 // @access  Private
-router.post("/", authMiddleware, createService);
+router.post("/additem", authMiddleware, upload.single("image"), addItem);
 
-// @route   GET /api/services
-// @desc    Get all services
+// @route   DELETE /api/services/deleteitem/:id
+// @desc    Delete a service item
+// @access  Private
+router.delete("/deleteitem/:id", authMiddleware, deleteItem);
+
+// @route   GET /api/services/getitem/:id
+// @desc    Get a service item by ID
+// @access  Private
+router.get("/getitem/:id", authMiddleware, getItemById);
+
+// @route   GET /api/services/getitems
+// @desc    Get all service items
+// @access  Private
+router.get("/getitems", authMiddleware, getItems);
+
+// @route   PUT /api/services/updateitem/:id
+// @desc    Update a service item
+// @access  Private
+router.put(
+  "/updateitem/:id",
+  authMiddleware,
+  upload.single("image"),
+  updateItem
+);
+
+// @route   GET /api/services/getitemsforstudents/:serviceType
+// @desc    Get all service items for students
 // @access  Public
-router.get("/", getAllServices);
-
-// @route   PUT /api/services/:id
-// @desc    Update a service
-// @access  Private
-router.put("/:id", authMiddleware, updateService);
-
-// @route   DELETE /api/services/:id
-// @desc    Delete a service
-// @access  Private
-router.delete("/:id", authMiddleware, deleteService);
+router.get("/getitemsforstudents/:serviceType", getItemsForStudents);
 
 module.exports = router;
