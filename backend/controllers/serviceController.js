@@ -10,7 +10,15 @@ const Ride = require("../models/Ride");
 const addItem = async (req, res) => {
   const serviceProvider = await ServiceProvider.findById(req.user.id);
   const { providedservice } = serviceProvider;
-  const { name, description, portionSize, price } = req.body;
+  const {
+    name,
+    description,
+    portionSize,
+    seats,
+    accommodationSize,
+    guideType,
+    price,
+  } = req.body;
   const providerId = req.user.id;
   const image = req.file ? req.file.filename : null;
 
@@ -33,6 +41,7 @@ const addItem = async (req, res) => {
           name,
           image,
           description,
+          accommodationSize,
           price,
         });
         break;
@@ -42,15 +51,17 @@ const addItem = async (req, res) => {
           name,
           image,
           description,
+          guideType,
           price,
         });
         break;
-      case "Ride":
+      case "Rides":
         newItem = new Ride({
           providerId,
           name,
           image,
           description,
+          seats,
           price,
         });
         break;
@@ -94,7 +105,7 @@ const deleteItem = async (req, res) => {
           _id: id,
         });
         break;
-      case "Ride":
+      case "Rides":
         deletedItem = await Ride.findOneAndDelete({
           providerId,
           _id: id,
@@ -143,7 +154,7 @@ const getItemById = async (req, res) => {
       case "Guide":
         item = await Guide.findOne({ providerId, _id: id });
         break;
-      case "Ride":
+      case "Rides":
         item = await Ride.findOne({ providerId, _id: id });
         break;
       default:
@@ -179,7 +190,7 @@ const getItems = async (req, res) => {
       case "Guide":
         items = await Guide.find({ providerId });
         break;
-      case "Ride":
+      case "Rides":
         items = await Ride.find({ providerId });
         break;
       default:
@@ -203,19 +214,20 @@ const updateItem = async (req, res) => {
   const { providedservice } = serviceProvider;
   const { id } = req.params;
   const providerId = req.user.id;
-  const { name, description, portionSize, price } = req.body;
+  const {
+    name,
+    description,
+    portionSize,
+    seats,
+    accommodationSize,
+    guideType,
+    price,
+  } = req.body;
   const image = req.file ? req.file.filename : undefined;
 
   try {
     let existingItem;
     let updatedItem;
-    const updateData = {
-      ...(name && { name }),
-      ...(description && { description }),
-      ...(portionSize && { portionSize }),
-      ...(price && { price }),
-      ...(image && { image }),
-    };
     switch (providedservice) {
       case "Food":
         existingItem = await Food.findOne({ providerId, _id: id });
@@ -224,7 +236,13 @@ const updateItem = async (req, res) => {
         }
         updatedItem = await Food.findOneAndUpdate(
           { providerId, _id: id },
-          updateData,
+          {
+            ...(name && { name }),
+            ...(description && { description }),
+            ...(portionSize && { portionSize }),
+            ...(price && { price }),
+            ...(image && { image }),
+          },
           { new: true }
         );
         break;
@@ -235,7 +253,13 @@ const updateItem = async (req, res) => {
         }
         updatedItem = await Accommodation.findOneAndUpdate(
           { providerId, _id: id },
-          updateData,
+          {
+            ...(name && { name }),
+            ...(description && { description }),
+            ...(accommodationSize && { accommodationSize }),
+            ...(price && { price }),
+            ...(image && { image }),
+          },
           { new: true }
         );
         break;
@@ -246,18 +270,30 @@ const updateItem = async (req, res) => {
         }
         updatedItem = await Guide.findOneAndUpdate(
           { providerId, _id: id },
-          updateData,
+          {
+            ...(name && { name }),
+            ...(description && { description }),
+            ...(guideType && { guideType }),
+            ...(price && { price }),
+            ...(image && { image }),
+          },
           { new: true }
         );
         break;
-      case "Ride":
+      case "Rides":
         existingItem = await Ride.findOne({ providerId, _id: id });
         if (!existingItem) {
           return res.status(404).json({ message: "Item not found" });
         }
         updatedItem = await Ride.findOneAndUpdate(
           { providerId, _id: id },
-          updateData,
+          {
+            ...(name && { name }),
+            ...(description && { description }),
+            ...(seats && { seats }),
+            ...(price && { price }),
+            ...(image && { image }),
+          },
           { new: true }
         );
         break;
@@ -290,10 +326,45 @@ const updateItem = async (req, res) => {
   }
 };
 
+//get all items for students
+const getItemsForStudents = async (req, res) => {
+  const { serviceType } = req.params;
+
+  try {
+    let items;
+    switch (serviceType) {
+      case "food":
+        items = await Food.find().populate("providerId");
+        break;
+      case "accommodation":
+        items = await Accommodation.find().populate("providerId");
+        break;
+      case "guide":
+        items = await Guide.find().populate("providerId");
+        break;
+      case "rides":
+        items = await Ride.find().populate("providerId");
+        break;
+      default:
+        return res.status(400).json({ message: "Invalid service type" });
+    }
+
+    const itemsWithImageUrl = items.map((item) => {
+      const imageUrl = item.image ? `/uploads/${item.image}` : null;
+      return { ...item._doc, imageUrl };
+    });
+
+    res.status(200).json(itemsWithImageUrl);
+  } catch (error) {
+    res.status(500).json({ message: "Error getting items", error });
+  }
+};
+
 module.exports = {
   addItem,
   deleteItem,
   getItemById,
   getItems,
   updateItem,
+  getItemsForStudents,
 };
