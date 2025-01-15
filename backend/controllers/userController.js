@@ -2,6 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const Student = require("../models/Student");
 const ServiceProvider = require("../models/ServiceProvider");
+const bcrypt = require("bcrypt");
 
 //get user details
 const getUser = async (req, res) => {
@@ -44,6 +45,7 @@ const updateUser = async (req, res) => {
       password,
     } = req.body;
     const profileImage = req.file ? req.file.filename : undefined;
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     let existingUser;
     let updatedUser;
@@ -54,7 +56,7 @@ const updateUser = async (req, res) => {
         ...(lastname && { lastname }),
         ...(mobilenumber && { mobilenumber }),
         ...(email && { email }),
-        ...(password && { password }),
+        ...(password && { password: hashedPassword }),
         ...(profileImage && { profileImage }),
       };
       updatedUser = await Student.findByIdAndUpdate(req.user.id, updateData, {
@@ -70,7 +72,7 @@ const updateUser = async (req, res) => {
         ...(email && { email }),
         ...(mobilenumber && { mobilenumber }),
         ...(providedservice && { providedservice }),
-        ...(password && { password }),
+        ...(password && { password: hashedPassword }),
         ...(profileImage && { profileImage }),
       };
       updatedUser = await ServiceProvider.findByIdAndUpdate(
