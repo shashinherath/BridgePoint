@@ -2,7 +2,7 @@ import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Logo from "../assets/logo/logo.png";
 
 function classNames(...classes) {
@@ -10,6 +10,24 @@ function classNames(...classes) {
 }
 
 export default function Navbar() {
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const category = queryParams.get("category");
+
+  const getNavClassName = (path) => {
+    if (path === "/" && location.pathname === "/") {
+      return "rounded-md bg-orange-700 px-3 py-2 text-sm font-medium text-white";
+    } else if (path === "food" && category === "food") {
+      return "rounded-md bg-orange-700 px-3 py-2 text-sm font-medium text-white";
+    } else if (path === "accommodation" && category === "accommodation") {
+      return "rounded-md bg-orange-700 px-3 py-2 text-sm font-medium text-white";
+    } else if (path === "rides" && category === "rides") {
+      return "rounded-md bg-orange-700 px-3 py-2 text-sm font-medium text-white";
+    } else if (path === "guide" && category === "guide") {
+      return "rounded-md bg-orange-700 px-3 py-2 text-sm font-medium text-white";
+    }
+    return "rounded-md px-3 py-2 text-sm font-medium text-orange-300 hover:bg-orange-700 hover:text-white";
+  };
   return (
     <Disclosure as="nav" className="bg-orange-800">
       {({ open }) => (
@@ -32,36 +50,33 @@ export default function Navbar() {
                 <div className="hidden lg:ml-6 lg:block">
                   <div className="flex space-x-4">
                     {/* Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" */}
-                    <a
-                      href="#"
-                      className="rounded-md bg-orange-700 px-3 py-2 text-sm font-medium text-white"
-                    >
+                    <Link to="/" className={getNavClassName("/")}>
                       Home
-                    </a>
-                    <a
-                      href="#"
-                      className="rounded-md px-3 py-2 text-sm font-medium text-orange-300 hover:bg-orange-700 hover:text-white"
+                    </Link>
+                    <Link
+                      to="/listing?category=food"
+                      className={getNavClassName("food")}
                     >
                       Food
-                    </a>
-                    <a
-                      href="#"
-                      className="rounded-md px-3 py-2 text-sm font-medium text-orange-300 hover:bg-orange-700 hover:text-white"
+                    </Link>
+                    <Link
+                      to="/listing?category=accommodation"
+                      className={getNavClassName("accommodation")}
                     >
                       Accommodation
-                    </a>
-                    <a
-                      href="#"
-                      className="rounded-md px-3 py-2 text-sm font-medium text-orange-300 hover:bg-orange-700 hover:text-white"
+                    </Link>
+                    <Link
+                      to="/listing?category=rides"
+                      className={getNavClassName("rides")}
                     >
                       Ride
-                    </a>
-                    <a
-                      href="#"
-                      className="rounded-md px-3 py-2 text-sm font-medium text-orange-300 hover:bg-orange-700 hover:text-white"
+                    </Link>
+                    <Link
+                      to="/listing?category=guide"
+                      className={getNavClassName("guide")}
                     >
                       Local Guide
-                    </a>
+                    </Link>
                   </div>
                 </div>
               </div>
