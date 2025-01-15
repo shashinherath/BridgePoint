@@ -1,17 +1,18 @@
 import React, { useState } from "react";
 import RicenCurry from "../assets/images/food/RicenCurry.png";
 import { Link } from "react-router-dom";
-import { FaTimes } from 'react-icons/fa';
+import { FaTimes } from "react-icons/fa";
 
-const ListView = ({ setShowPopup }) => {
+const ListView = ({ selectedItem, closePopup }) => {
+  const backendUrl =
+    process.env.NODE_ENV === "development"
+      ? "http://localhost:5000"
+      : process.env.Backend_URL;
+
   const [rating, setRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
   const [shopRating, setShopRating] = useState(3.5); // Initial shop rating
   const [ratingCount, setRatingCount] = useState(1); // Initial rating count
-
-  const closePopup = () => {
-    setShowPopup(false); // Use the passed function to close the popup
-  };
 
   const handleRating = (value) => {
     const newRatingCount = ratingCount + 1;
@@ -79,7 +80,7 @@ const ListView = ({ setShowPopup }) => {
           {/* Photo Segment */}
           <div className="w-1/3 p-4">
             <img
-              src={RicenCurry}
+              src={backendUrl + selectedItem.imageUrl}
               alt="Delicious Food"
               className="w-full h-auto rounded-lg object-cover shadow-lg"
             />
@@ -87,28 +88,29 @@ const ListView = ({ setShowPopup }) => {
           {/* Food Details Segment */}
           <div className="w-1/3 p-4">
             <h2 className="text-3xl font-bold text-gray-800 mb-4">
-              Rice & Curry
+              {selectedItem.name}
             </h2>
             <p className="text-lg text-gray-500 mb-3">
-              Samba rice with carrots and onion salad, roasted eggplant curry,
-              leeks and red lentils and roasted chickpeas
+              {selectedItem.description}
             </p>
             <p className="text-lg font-bold text-green-700 mb-1">
-              Price: Rs. 150.00
+              Price: Rs. {selectedItem.price}.00
             </p>
-            <p className="text-lg text-blue-700">Portion size: 1 Person</p>
+            <p className="text-lg text-blue-700">
+              Portion size: {selectedItem.portionSize}
+            </p>
           </div>
           {/* Other Information Segment */}
           <div className="w-1/3 p-4">
             <div className="mb-2">
               <h1 className="text-4xl font-bold text-gray-800 mb-2 text-center">
-                CDK
+                {selectedItem.providerId.companyname}
               </h1>
               <h4 className="text-xl font-semibold text-gray-800 mb-1 text-center">
                 Contact Details:
               </h4>
               <p className="text-lg text-gray-700 mb-4 text-center">
-                0710849736
+                {selectedItem.providerId.mobilenumber}
               </p>
 
               <div className="flex items-center justify-center space-x-2 mb-2">
@@ -119,10 +121,11 @@ const ListView = ({ setShowPopup }) => {
                 {[1, 2, 3, 4, 5].map((star) => (
                   <span
                     key={star}
-                    className={`cursor-pointer ${hoverRating >= star || rating >= star
-                      ? "text-yellow-500"
-                      : "text-gray-300"
-                      } transition duration-300 hover:scale-125`}
+                    className={`cursor-pointer ${
+                      hoverRating >= star || rating >= star
+                        ? "text-yellow-500"
+                        : "text-gray-300"
+                    } transition duration-300 hover:scale-125`}
                     onClick={() => handleRating(star)}
                     onMouseEnter={() => handleMouseEnter(star)}
                     onMouseLeave={handleMouseLeave}
