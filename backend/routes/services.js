@@ -5,6 +5,7 @@ const {
   getItemById,
   getItems,
   updateItem,
+  getItemsForStudents,
 } = require("../controllers/serviceController");
 const authMiddleware = require("../middleware/authMiddleware");
 const upload = require("../middleware/uploadMiddleware");
@@ -39,5 +40,10 @@ router.put(
   upload.single("image"),
   updateItem
 );
+
+// @route   GET /api/services/getitemsforstudents/:serviceType
+// @desc    Get all service items for students
+// @access  Public
+router.get("/getitemsforstudents/:serviceType", getItemsForStudents);
 
 module.exports = router;
