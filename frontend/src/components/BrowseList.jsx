@@ -1,13 +1,48 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ListView from "./ListView";
-import RicenCurry from "../assets/images/food/RicenCurry.png";
-
+import axios from "axios";
 
 export default function BrowseList() {
-  const [showPopup, setShowPopup] = useState(false);
+  const backendUrl =
+    process.env.NODE_ENV === "development"
+      ? "http://localhost:5000"
+      : process.env.Backend_URL;
 
-  const openPopup = () => {
+  const token = localStorage.getItem("token");
+
+  const [items, setItems] = useState([]);
+  const [serviceType, setServiceType] = useState("Food");
+  const [showPopup, setShowPopup] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
+
+  useEffect(() => {
+    const fetchItems = async () => {
+      try {
+        const response = await axios.get(
+          `${backendUrl}/api/services/getitemsforstudents/${serviceType}`,
+          {
+            headers: {
+              Authorization: token,
+            },
+          }
+        );
+        setItems(response.data);
+      } catch (error) {
+        console.error("Error fetching food items:", error);
+      }
+    };
+
+    fetchItems();
+  }, []);
+
+  const openPopup = (item) => {
+    setSelectedItem(item);
     setShowPopup(true);
+  };
+
+  const closePopup = () => {
+    setSelectedItem(null);
+    setShowPopup(false);
   };
 
   return (
@@ -15,24 +50,23 @@ export default function BrowseList() {
       <h1 className="text-2xl font-bold">Popular near you</h1>
 
       <div className="xl:lg:md:sm:grid xl:lg:md:sm:grid-cols-4 xl:lg:md:sm:justify-items-center flex flex-wrap justify-start py-5">
-        {Array.from({ length: 10 }).map((_, index) => (
-          <div
-            key={index}
-            className="bg-white w-72 h-64 m-4 rounded-lg shadow-xl"
-          >
+        {items.map((item) => (
+          <div className="bg-white w-72 h-64 m-4 rounded-lg shadow-xl">
             <img
-              src={RicenCurry}
+              src={backendUrl + item.imageUrl}
               alt="food"
               className="w-full h-32 object-cover"
             />
             <div className="p-4">
-              <h1 className="text-xl font-semibold">CDK</h1>
-              <p className="text-sm text-gray-500">Vegetable Rice</p>
+              <h1 className="text-xl font-semibold">
+                {item.providerId.companyname}
+              </h1>
+              <p className="text-sm text-gray-500">{item.name}</p>
               <div className="mt-4 flex justify-between items-center">
-                <p className="text-xl font-bold">Rs. 150</p>
+                <p className="text-xl font-bold">Rs. {item.price}</p>
                 <button
                   className="bg-orange-800 text-white px-4 py-2 rounded-md"
-                  onClick={openPopup}
+                  onClick={() => openPopup(item)}
                 >
                   View
                 </button>
@@ -41,7 +75,9 @@ export default function BrowseList() {
           </div>
         ))}
       </div>
-      {showPopup && <ListView setShowPopup={setShowPopup} />}
+      {showPopup && (
+        <ListView selectedItem={selectedItem} closePopup={closePopup} />
+      )}
     </div>
   );
 }
