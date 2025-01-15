@@ -11,12 +11,16 @@ const ItemPopup = ({ item, onClose, onEdit, onDelete, onAdd }) => {
       : process.env.Backend_URL;
 
   const token = localStorage.getItem("token");
+  const providedservice = localStorage.getItem("providedservice");
 
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [image, setImage] = useState(null);
   const [description, setDescription] = useState("");
   const [portionSize, setPortionSize] = useState("");
+  const [seats, setSeats] = useState("");
+  const [accommodationSize, setAccommodationSize] = useState("");
+  const [guideType, setGuideType] = useState("");
 
   const [isEditing, setIsEditing] = useState(false);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
@@ -27,6 +31,9 @@ const ItemPopup = ({ item, onClose, onEdit, onDelete, onAdd }) => {
     setPrice(item.price);
     setDescription(item.description);
     setPortionSize(item.portionSize);
+    setSeats(item.seats);
+    setAccommodationSize(item.accommodationSize);
+    setGuideType(item.guideType);
   }, [item]);
 
   const handleOutsideClick = (e) => {
@@ -47,6 +54,9 @@ const ItemPopup = ({ item, onClose, onEdit, onDelete, onAdd }) => {
     if (image !== null) formData.append("image", image);
     formData.append("description", description);
     formData.append("portionSize", portionSize);
+    formData.append("seats", seats);
+    formData.append("accommodationSize", accommodationSize);
+    formData.append("guideType", guideType);
 
     try {
       const response = await axios.put(
@@ -148,22 +158,83 @@ const ItemPopup = ({ item, onClose, onEdit, onDelete, onAdd }) => {
                 required
               />
             </div>
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Portion Size
-              </label>
-              <select
-                value={portionSize}
-                onChange={(e) => setPortionSize(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 transition duration-300"
-                required
-              >
-                <option value="">Select Portion Size</option>
-                <option value="1 person">1 person</option>
-                <option value="2 person">2 person</option>
-                <option value="3 person">3 person</option>
-              </select>
-            </div>
+            {providedservice === "Food" && (
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Portion Size
+                </label>
+                <select
+                  value={portionSize}
+                  onChange={(e) => setPortionSize(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 transition duration-300"
+                  required
+                >
+                  <option value="">Select Portion Size</option>
+                  <option value="1 person">1 person</option>
+                  <option value="2 person">2 person</option>
+                  <option value="3 person">3 person</option>
+                </select>
+              </div>
+            )}
+            {providedservice === "Accommodation" && (
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Accommodation Size
+                </label>
+                <select
+                  value={accommodationSize}
+                  onChange={(e) => setAccommodationSize(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 transition duration-300"
+                  required
+                >
+                  <option value="">Select Accommodation size</option>
+                  <option value="1 person">1 person</option>
+                  <option value="2 person">2 person</option>
+                  <option value="3 person">3 person</option>
+                  <option value="4 person">4 person</option>
+                  <option value="6 person">6 person</option>
+                  <option value="8 person">8 person</option>
+                </select>
+              </div>
+            )}
+            {providedservice === "Rides" && (
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Seats
+                </label>
+                <select
+                  value={seats}
+                  onChange={(e) => setSeats(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 transition duration-300"
+                  required
+                >
+                  <option value="">Select Seats</option>
+                  <option value="1 seat">1 seat</option>
+                  <option value="2 seats">2 seats</option>
+                  <option value="3 seats">3 seats</option>
+                  <option value="5 seats">5 seats</option>
+                  <option value="7 seats">7 seats</option>
+                </select>
+              </div>
+            )}
+            {providedservice === "Guide" && (
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Service Type
+                </label>
+                <select
+                  value={guideType}
+                  onChange={(e) => setGuideType(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 transition duration-300"
+                  required
+                >
+                  <option value="">Select Service type</option>
+                  <option value="Guidance service">Guidance service</option>
+                  <option value="Camping service">Camping service</option>
+                  <option value="Adventure service">Adventure service</option>
+                </select>
+              </div>
+            )}
             <div className="flex justify-end space-x-4">
               <button
                 onClick={handleSaveClick}
@@ -190,9 +261,26 @@ const ItemPopup = ({ item, onClose, onEdit, onDelete, onAdd }) => {
             <h2 className="text-2xl font-bold mb-2">{item.name}</h2>
             <p className="text-xl text-gray-800 mb-4">Rs.{item.price}</p>
             <p className="text-gray-700 mb-4">{item.description}</p>
-            <p className="text-gray-700 mb-4">
-              Portion Size: {item.portionSize || "Not selected"}
-            </p>
+            {providedservice === "Food" && (
+              <p className="text-gray-700 mb-4">
+                Portion Size: {item.portionSize || "Not selected"}
+              </p>
+            )}
+            {providedservice === "Accommodation" && (
+              <p className="text-gray-700 mb-4">
+                Accommodation Size: {item.accommodationSize || "Not selected"}
+              </p>
+            )}
+            {providedservice === "Rides" && (
+              <p className="text-gray-700 mb-4">
+                Seats: {item.seats || "Not selected"}
+              </p>
+            )}
+            {providedservice === "Guide" && (
+              <p className="text-gray-700 mb-4">
+                Service Type: {item.guideType || "Not selected"}
+              </p>
+            )}
             <div className="flex justify-end space-x-4">
               <button
                 onClick={handleEditClick}
