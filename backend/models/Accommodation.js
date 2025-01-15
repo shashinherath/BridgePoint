@@ -1,15 +1,20 @@
+const mongoose = require("mongoose");
+
 const AccommodationListingSchema = new mongoose.Schema({
   providerId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "LocalServiceProvider",
+    ref: "ServiceProvider",
     required: true,
   },
-  address: { type: String, required: true },
-  pricePerMonth: { type: Number, required: true },
-  availabilityStatus: { type: Boolean, default: true },
+  name: { type: String, required: true },
+  image: { type: String, required: true },
+  description: { type: String, required: true },
+  accommodationSize: { type: String, required: true },
+  price: { type: Number, required: true },
+  item_type: {
+    type: String,
+    default: "accommodation",
+  },
 });
 
-module.exports = mongoose.model(
-  "AccommodationListing",
-  AccommodationListingSchema
-);
+module.exports = mongoose.model("Accommodation", AccommodationListingSchema);
