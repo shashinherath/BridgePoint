@@ -123,7 +123,7 @@ const UpdateProfile = ({ onClose, onSave }) => {
           <div className="p-2 md:p-4">
             <div className="w-full px-6 pb-8 mt-8 sm:max-w-xl sm:rounded-lg">
               <h2 className="pl-1 text-2xl font-bold sm:text-3xl">
-                {userData.providedservice} Seller Profile
+                {userData.providedservice} Provider Profile
               </h2>
               <div className="grid max-w-2xl mx-auto mt-8">
                 <div className="flex flex-col items-center space-y-5 sm:flex-row sm:space-y-0">
