@@ -11,7 +11,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function SellerNavbar() {
+export default function SellerNavbar({ onSearch }) {
   const backendUrl =
     process.env.NODE_ENV === "development"
       ? "http://localhost:5000"
@@ -88,7 +88,7 @@ export default function SellerNavbar() {
                       Dashboard
                     </h1>
                     <p className="text-xl text-white font-bold">
-                      {userData.providedservice} Seller
+                      {userData.providedservice} Provider
                     </p>
                   </div>
                 </div>
@@ -111,6 +111,7 @@ export default function SellerNavbar() {
                         className="block w-full rounded-md border-0 bg-orange-700 py-1.5 pl-10 pr-3 text-orange-300 placeholder:text-orange-400 focus:bg-white focus:text-orange-900 focus:ring-0 sm:text-sm sm:leading-6"
                         placeholder="Search"
                         type="search"
+                        onChange={(e) => onSearch(e.target.value)}
                       />
                     </div>
                   </div>
@@ -249,6 +250,7 @@ export default function SellerNavbar() {
                     as="a"
                     href="#"
                     className="block rounded-md px-3 py-2 text-base font-medium text-white hover:bg-orange-700 hover:text-white"
+                    onClick={handleSignOut}
                   >
                     Sign out
                   </Disclosure.Button>
