@@ -17,19 +17,36 @@ const Register = () => {
     mobilenumber: "",
     email: "",
     password: "",
+    confirmPassword: "",
     companyname: "",
     address: "",
     city: "",
     state: "",
     providedservice: "",
   });
+  const [passwordError, setPasswordError] = useState("");
+  const [formValid, setFormValid] = useState(true);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const validatePasswords = () => {
+    if (formData.password !== formData.confirmPassword) {
+      setPasswordError("Passwords do not match");
+      setFormValid(false);
+      return false;
+    }
+    setPasswordError("");
+    setFormValid(true);
+    return true;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validatePasswords()) {
+      return;
+    }
     try {
       if (isServiceProvider) {
         await registerServiceProvider(formData);
@@ -120,6 +137,7 @@ const Register = () => {
                   value={formData.firstname}
                   onChange={handleChange}
                   className="mt-1 block w-full px-4 py-2 border border-gray-500 rounded-lg outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                  required
                 />
               </div>
               <div>
@@ -130,6 +148,7 @@ const Register = () => {
                   value={formData.lastname}
                   onChange={handleChange}
                   className="mt-7 block w-full px-4 py-2 border border-gray-500 rounded-lg outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                  required
                 />
               </div>
 
@@ -144,6 +163,7 @@ const Register = () => {
                   value={formData.mobilenumber}
                   onChange={handleChange}
                   className="mt-1 block w-full px-4 py-2 border border-gray-500 rounded-lg outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                  required
                 />
               </div>
 
@@ -158,6 +178,7 @@ const Register = () => {
                   value={formData.email}
                   onChange={handleChange}
                   className="mt-1 block w-full px-4 py-2 border border-gray-500 rounded-lg outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                  required
                 />
               </div>
 
@@ -170,7 +191,10 @@ const Register = () => {
                   name="password"
                   value={formData.password}
                   onChange={handleChange}
-                  className="mt-1 block w-full px-4 py-2 border border-gray-500 rounded-lg outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                  className={`mt-1 block w-full px-4 py-2 border ${
+                    passwordError ? "border-red-500" : "border-gray-500"
+                  } rounded-lg outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500`}
+                  required
                 />
               </div>
 
@@ -183,8 +207,14 @@ const Register = () => {
                   name="confirmPassword"
                   value={formData.confirmPassword}
                   onChange={handleChange}
-                  className="mt-1 block w-full px-4 py-2 border border-gray-500 rounded-lg outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                  className={`mt-1 block w-full px-4 py-2 border ${
+                    passwordError ? "border-red-500" : "border-gray-500"
+                  } rounded-lg outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500`}
+                  required
                 />
+                {passwordError && (
+                  <p className="text-red-500 text-sm mt-1">{passwordError}</p>
+                )}
               </div>
             </div>
           ) : (
@@ -200,6 +230,7 @@ const Register = () => {
                   value={formData.companyname}
                   onChange={handleChange}
                   className="mt-1 block w-full px-4 py-2 border border-gray-500 rounded-lg outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                  required
                 />
               </div>
               <div className="mb-4">
@@ -212,6 +243,7 @@ const Register = () => {
                   value={formData.address}
                   onChange={handleChange}
                   className="mt-1 block w-full px-4 py-2 border border-gray-500 rounded-lg outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                  required
                 />
 
                 <div className="grid grid-cols-2 gap-4 mt-2">
@@ -223,6 +255,7 @@ const Register = () => {
                       value={formData.city}
                       onChange={handleChange}
                       className="mt-1 block w-full px-4 py-2 border border-gray-500 rounded-lg outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                      required
                     />
                   </div>
                   <div>
@@ -233,6 +266,7 @@ const Register = () => {
                       value={formData.state}
                       onChange={handleChange}
                       className="mt-1 block w-full px-4 py-2 border border-gray-500 rounded-lg outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                      required
                     />
                   </div>
                 </div>
@@ -249,6 +283,7 @@ const Register = () => {
                   value={formData.email}
                   onChange={handleChange}
                   className="mt-1 block w-full px-4 py-2 border border-gray-500 rounded-lg outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                  required
                 />
               </div>
 
@@ -264,6 +299,7 @@ const Register = () => {
                     value={formData.mobilenumber}
                     onChange={handleChange}
                     className="mt-1 block w-full px-4 py-2 border border-gray-500 rounded-lg outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                    required
                   />
                 </div>
                 <div>
@@ -277,6 +313,7 @@ const Register = () => {
                       value={formData.providedservice}
                       onChange={handleChange}
                       className="mt-1 block w-full px-4 py-2 border border-gray-500 rounded-lg outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                      required
                     >
                       <option>Please Select</option>
                       <option>Food</option>
@@ -298,7 +335,10 @@ const Register = () => {
                     name="password"
                     value={formData.password}
                     onChange={handleChange}
-                    className="mt-1 block w-full px-4 py-2 border border-gray-500 rounded-lg outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                    className={`mt-1 block w-full px-4 py-2 border ${
+                      passwordError ? "border-red-500" : "border-gray-500"
+                    } rounded-lg outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500`}
+                    required
                   />
                 </div>
                 <div>
@@ -311,8 +351,14 @@ const Register = () => {
                     name="confirmPassword"
                     value={formData.confirmPassword}
                     onChange={handleChange}
-                    className="mt-1 block w-full px-4 py-2 border border-gray-500 rounded-lg outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                    className={`mt-1 block w-full px-4 py-2 border ${
+                      passwordError ? "border-red-500" : "border-gray-500"
+                    } rounded-lg outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500`}
+                    required
                   />
+                  {passwordError && (
+                    <p className="text-red-500 text-sm mt-1">{passwordError}</p>
+                  )}
                 </div>
               </div>
             </>
