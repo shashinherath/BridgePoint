@@ -2,7 +2,7 @@ import { Fragment, useEffect, useState } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Logo from "../assets/logo/logo.png";
 import UpdateProfile from "./UpdateProfile";
 import axios from "axios";
@@ -21,6 +21,7 @@ export default function SellerNavbar() {
 
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [userData, setUserData] = useState({});
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -51,6 +52,13 @@ export default function SellerNavbar() {
   const handleProfileSave = (formData) => {
     console.log("Profile updated:", formData);
     setIsProfileOpen(false);
+  };
+
+  const handleSignOut = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("userType");
+    localStorage.removeItem("providedservice");
+    navigate("/login");
   };
 
   return (
@@ -164,6 +172,7 @@ export default function SellerNavbar() {
                                   active ? "bg-gray-100" : "",
                                   "block px-4 py-2 text-sm text-gray-700"
                                 )}
+                                onClick={handleSignOut}
                               >
                                 Sign out
                               </a>
