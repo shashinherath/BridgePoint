@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import ListView from "./ListView";
 import axios from "axios";
 
-export default function BrowseList({ category }) {
+export default function BrowseList({ category, searchTerm }) {
   const backendUrl =
     process.env.NODE_ENV === "development"
       ? "http://localhost:5000"
@@ -34,6 +34,16 @@ export default function BrowseList({ category }) {
     fetchItems();
   }, [category]);
 
+  const filteredItems = items.filter(
+    (item) =>
+      item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.providerId.companyname
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase()) ||
+      item.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.price.toString().includes(searchTerm)
+  );
+
   const openPopup = (item) => {
     setSelectedItem(item);
     setShowPopup(true);
@@ -49,7 +59,7 @@ export default function BrowseList({ category }) {
       <h1 className="text-2xl font-bold">Popular near you</h1>
 
       <div className="xl:lg:md:sm:grid xl:lg:md:sm:grid-cols-4 xl:lg:md:sm:justify-items-center flex flex-wrap justify-start py-5">
-        {items.map((item) => (
+        {filteredItems.map((item) => (
           <div className="bg-white w-72 h-64 m-4 rounded-lg shadow-xl">
             <img
               src={backendUrl + item.imageUrl}
