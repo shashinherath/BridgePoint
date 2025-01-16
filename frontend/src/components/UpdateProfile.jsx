@@ -19,9 +19,11 @@ const UpdateProfile = ({ onClose, onSave }) => {
   const [mobileNumber, setMobileNumber] = useState("");
   const [providedService, setProvidedService] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [profileImage, setProfileImage] = useState("");
   const [existingProfileImage, setExistingProfileImage] = useState("");
   const [showProfileImage, setShowProfileImage] = useState(null);
+  const [passwordError, setPasswordError] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -49,6 +51,14 @@ const UpdateProfile = ({ onClose, onSave }) => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    if (confirmPassword && password !== confirmPassword) {
+      setPasswordError("Passwords do not match");
+    } else {
+      setPasswordError("");
+    }
+  }, [password, confirmPassword]);
+
   const handleChange = (e) => {
     const file = e.target.files[0];
     setProfileImage(file);
@@ -63,6 +73,8 @@ const UpdateProfile = ({ onClose, onSave }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (passwordError) return;
+
     const formData = new FormData();
     formData.append("companyname", companyName);
     formData.append("address", address);
@@ -292,7 +304,9 @@ const UpdateProfile = ({ onClose, onSave }) => {
                         type="password"
                         id="password"
                         name="password"
-                        className="bg-orange-50 border border-orange-300 text-sm rounded-lg focus:ring-orange-500 focus:border-orange-500 block w-full p-2.5"
+                        className={`bg-orange-50 border ${
+                          passwordError ? "border-red-500" : "border-orange-300"
+                        } text-sm rounded-lg focus:ring-orange-500 focus:border-orange-500 block w-full p-2.5`}
                         placeholder="Your password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
@@ -310,12 +324,19 @@ const UpdateProfile = ({ onClose, onSave }) => {
                         type="password"
                         id="confirmpassword"
                         name="confirmpassword"
-                        className="bg-orange-50 border border-orange-300 text-sm rounded-lg focus:ring-orange-500 focus:border-orange-500 block w-full p-2.5"
+                        className={`bg-orange-50 border ${
+                          passwordError ? "border-red-500" : "border-orange-300"
+                        } text-sm rounded-lg focus:ring-orange-500 focus:border-orange-500 block w-full p-2.5`}
                         placeholder="Confirm your password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
                         required
                       />
+                      {passwordError && (
+                        <p className="mt-2 text-sm text-red-600">
+                          {passwordError}
+                        </p>
+                      )}
                     </div>
                     <div className="flex justify-end">
                       <button
