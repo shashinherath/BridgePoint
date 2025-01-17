@@ -16,6 +16,8 @@ import Car from "../assets/images/rides/Car.png";
 import EBike from "../assets/images/rides/EBike.png";
 import MotorBike from "../assets/images/rides/MotorBike.png";
 import Van from "../assets/images/rides/Van.png";
+import DoubleCab from "../assets/images/rides/DoubleCab.png";
+import Bus from "../assets/images/rides/Bus.png";
 
 export default function BrowseService({ category }) {
   const categories = {
@@ -55,8 +57,8 @@ export default function BrowseService({ category }) {
         { name: "MotorBike", image: MotorBike },
         { name: "Car", image: Car },
         { name: "Van", image: Van },
-        { name: "Van", image: Van },
-        { name: "Van", image: Van },
+        { name: "Double Cab", image: DoubleCab },
+        { name: "Bus", image: Bus },
       ],
     },
     guide: {
