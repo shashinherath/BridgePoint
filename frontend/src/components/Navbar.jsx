@@ -13,7 +13,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Navbar({ onSearch }) {
+export default function Navbar({ onSearch, searchItem }) {
   const backendUrl =
     process.env.NODE_ENV === "development"
       ? "http://localhost:5000"
@@ -24,6 +24,7 @@ export default function Navbar({ onSearch }) {
 
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [userData, setUserData] = useState({});
+  const [searchValue, setSearchValue] = useState(searchItem);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -46,6 +47,7 @@ export default function Navbar({ onSearch }) {
     };
 
     fetchData();
+    onSearch(searchItem);
   }, []);
 
   const handleProfileClick = () => {
@@ -66,6 +68,20 @@ export default function Navbar({ onSearch }) {
     localStorage.removeItem("userType");
     localStorage.removeItem("providedservice");
     navigate("/login");
+  };
+
+  const handleGoDashboard = () => {
+    if (userType === "serviceprovider") {
+      navigate("/dashboard");
+    } else {
+      navigate("/");
+    }
+  };
+
+  const handleEnterSearch = () => {
+    if (location.pathname === "/") {
+      navigate("/listing?category=food&item=" + searchValue);
+    }
   };
 
   const getNavClassName = (path) => {
@@ -168,7 +184,16 @@ export default function Navbar({ onSearch }) {
                         className="block w-full rounded-md border-0 bg-orange-700 py-1.5 pl-10 pr-3 text-orange-300 placeholder:text-orange-400 focus:bg-white focus:text-orange-900 focus:ring-0 sm:text-sm sm:leading-6"
                         placeholder="Search"
                         type="search"
-                        onChange={(e) => onSearch(e.target.value)}
+                        value={searchValue}
+                        onChange={(e) => {
+                          setSearchValue(e.target.value);
+                          onSearch(e.target.value);
+                        }}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") {
+                            handleEnterSearch();
+                          }
+                        }}
                       />
                     </div>
                   </div>
@@ -222,6 +247,22 @@ export default function Navbar({ onSearch }) {
                           leaveTo="transform opacity-0 scale-95"
                         >
                           <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                            {userType === "serviceprovider" && (
+                              <Menu.Item>
+                                {({ active }) => (
+                                  <a
+                                    href="#"
+                                    onClick={handleGoDashboard}
+                                    className={classNames(
+                                      active ? "bg-gray-100" : "",
+                                      "block px-4 py-2 text-sm text-gray-700"
+                                    )}
+                                  >
+                                    Go to Dashboard
+                                  </a>
+                                )}
+                              </Menu.Item>
+                            )}
                             <Menu.Item>
                               {({ active }) => (
                                 <a
