@@ -10,11 +10,12 @@ export default function Listing() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const category = queryParams.get("category");
+  const searchItem = queryParams.get("item") || "";
   const [searchTerm, setSearchTerm] = useState("");
 
   return (
     <div className="flex flex-col">
-      <Navbar onSearch={setSearchTerm} />
+      <Navbar onSearch={setSearchTerm} searchItem={searchItem} />
       <div className="flex flex-col justify-center items-center flex-grow">
         <BrowseService category={category} />
         <BrowseList category={category} searchTerm={searchTerm} />
