@@ -15,7 +15,7 @@ export default function Hero() {
     },
     {
       h1: "Wanna Help Out a",
-      p: "Where Campus Meets Community",
+      p: "Fellow Student?",
     },
   ];
 
