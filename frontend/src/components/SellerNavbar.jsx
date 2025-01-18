@@ -61,6 +61,10 @@ export default function SellerNavbar({ onSearch }) {
     navigate("/login");
   };
 
+  const handleGoHome = () => {
+    navigate("/");
+  };
+
   return (
     <>
       <Disclosure as="nav" className="bg-orange-800">
@@ -155,6 +159,20 @@ export default function SellerNavbar({ onSearch }) {
                             {({ active }) => (
                               <a
                                 href="#"
+                                onClick={handleGoHome}
+                                className={classNames(
+                                  active ? "bg-gray-100" : "",
+                                  "block px-4 py-2 text-sm text-gray-700"
+                                )}
+                              >
+                                Go to Home
+                              </a>
+                            )}
+                          </Menu.Item>
+                          <Menu.Item>
+                            {({ active }) => (
+                              <a
+                                href="#"
                                 onClick={handleProfileClick}
                                 className={classNames(
                                   active ? "bg-gray-100" : "",
@@ -188,37 +206,6 @@ export default function SellerNavbar({ onSearch }) {
             </div>
 
             <Disclosure.Panel className="lg:hidden">
-              <div className="space-y-1 px-2 pb-3 pt-2">
-                {/* Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" */}
-                <Disclosure.Button
-                  as="a"
-                  href="#"
-                  className="block rounded-md bg-orange-900 px-3 py-2 text-base font-medium text-white"
-                >
-                  Home
-                </Disclosure.Button>
-                <Disclosure.Button
-                  as="a"
-                  href="#"
-                  className="block rounded-md px-3 py-2 text-base font-medium text-orange-300 hover:bg-orange-700 hover:text-white"
-                >
-                  Team
-                </Disclosure.Button>
-                <Disclosure.Button
-                  as="a"
-                  href="#"
-                  className="block rounded-md px-3 py-2 text-base font-medium text-orange-300 hover:bg-orange-700 hover:text-white"
-                >
-                  About
-                </Disclosure.Button>
-                <Disclosure.Button
-                  as="a"
-                  href="#"
-                  className="block rounded-md px-3 py-2 text-base font-medium text-orange-300 hover:bg-orange-700 hover:text-white"
-                >
-                  Become a Partner
-                </Disclosure.Button>
-              </div>
               <div className="border-t border-orange-700 pb-3 pt-4">
                 <div className="flex items-center px-5">
                   <div className="flex-shrink-0">
@@ -245,6 +232,14 @@ export default function SellerNavbar({ onSearch }) {
                     className="block rounded-md px-3 py-2 text-base font-medium text-white hover:bg-orange-700 hover:text-white"
                   >
                     Your Profile
+                  </Disclosure.Button>
+                  <Disclosure.Button
+                    as="a"
+                    href="#"
+                    onClick={handleSignOut}
+                    className="block rounded-md px-3 py-2 text-base font-medium text-white hover:bg-orange-700 hover:text-white"
+                  >
+                    Go to Home
                   </Disclosure.Button>
                   <Disclosure.Button
                     as="a"
