@@ -1,4 +1,5 @@
 import React from "react";
+import { useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import HomeList from "../components/HomeList";
@@ -21,6 +22,7 @@ import Car from "../assets/images/rides/Car.png";
 import Van from "../assets/images/rides/Van.png";
 
 export default function Home() {
+  const [searchTerm, setSearchTerm] = useState("");
   const title = [
     "Explore Popular Foods Near You",
     "New Accommodation Listings Near You",
@@ -98,7 +100,7 @@ export default function Home() {
 
   return (
     <div className="flex flex-col">
-      <Navbar />
+      <Navbar onSearch={setSearchTerm} searchItem={searchTerm} />
       <Hero />
       <div className="flex flex-col justify-center items-center flex-grow">
         <AdBanner />
