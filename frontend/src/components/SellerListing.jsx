@@ -120,7 +120,7 @@ export default function SellerListing({ searchTerm }) {
               <img
                 src={backendUrl + item.imageUrl}
                 alt={item.name}
-                className="h-16 w-16 sm:h-24 sm:w-24 md:h-32 md:w-32 lg:h-40 lg:w-40"
+                className="h-16 w-16 sm:h-24 sm:w-24 md:h-32 md:w-32 lg:h-40 lg:w-40 rounded-full"
               />
             </div>
             <p className="flex justify-center font-bold text-sm pt-2">
