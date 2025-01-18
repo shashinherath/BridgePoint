@@ -59,8 +59,11 @@ export default function BrowseList({ category, searchTerm }) {
       <h1 className="text-2xl font-bold">Popular near you</h1>
 
       <div className="xl:lg:md:sm:grid xl:lg:md:sm:grid-cols-4 xl:lg:md:sm:justify-items-center flex flex-wrap justify-start py-5">
-        {filteredItems.map((item) => (
-          <div className="bg-white w-72 h-64 m-4 rounded-lg shadow-xl">
+        {filteredItems.map((item, index) => (
+          <div
+            key={item.id || index}
+            className="bg-white w-72 h-64 m-4 rounded-lg shadow-xl"
+          >
             <img
               src={backendUrl + item.imageUrl}
               alt="item"
@@ -85,7 +88,11 @@ export default function BrowseList({ category, searchTerm }) {
         ))}
       </div>
       {showPopup && (
-        <ListView selectedItem={selectedItem} closePopup={closePopup} />
+        <ListView
+          selectedItem={selectedItem}
+          closePopup={closePopup}
+          category={category}
+        />
       )}
     </div>
   );
