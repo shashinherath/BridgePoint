@@ -3,7 +3,7 @@ import RicenCurry from "../assets/images/food/RicenCurry.png";
 import { Link } from "react-router-dom";
 import { FaTimes } from "react-icons/fa";
 
-const ListView = ({ selectedItem, closePopup }) => {
+const ListView = ({ selectedItem, closePopup, category }) => {
   const backendUrl =
     process.env.NODE_ENV === "development"
       ? "http://localhost:5000"
@@ -96,9 +96,26 @@ const ListView = ({ selectedItem, closePopup }) => {
             <p className="text-lg font-bold text-green-700 mb-1">
               Price: Rs. {selectedItem.price}.00
             </p>
-            <p className="text-lg text-blue-700">
-              Portion size: {selectedItem.portionSize}
-            </p>
+            {category === "food" && (
+              <p className="text-lg text-blue-700">
+                Portion size: {selectedItem.portionSize}
+              </p>
+            )}
+            {category === "accommodation" && (
+              <p className="text-lg text-blue-700">
+                Accommodation size: {selectedItem.accommodationSize}
+              </p>
+            )}
+            {category === "rides" && (
+              <p className="text-lg text-blue-700">
+                Seats: {selectedItem.seats}
+              </p>
+            )}
+            {category === "guide" && (
+              <p className="text-lg text-blue-700">
+                Guide Type: {selectedItem.guideType}
+              </p>
+            )}
           </div>
           {/* Other Information Segment */}
           <div className="w-1/3 p-4">
