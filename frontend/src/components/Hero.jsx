@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import FoodImg from "../assets/images/Food.png";
 import AccommodationImg from "../assets/images/Accommodation.png";
 import RidesImg from "../assets/images/Rides.png";
+import { Link } from "react-router-dom";
 
 export default function Hero() {
   const slides = [
@@ -45,40 +46,48 @@ export default function Hero() {
               — Making University Life Easier and More Enjoyable!
             </span>
           </p>
-          <button className="bg-[#681414] hover:bg-red-700 text-[#DDA200] py-2 px-4 sm:py-1 sm:px-6 rounded-2xl font-bold shadow-md">
-            Join Now
-          </button>
+          <Link to="/register">
+            <button className="bg-[#681414] hover:bg-red-700 text-[#DDA200] py-2 px-4 sm:py-1 sm:px-6 rounded-2xl font-bold shadow-md">
+              Join Now
+            </button>
+          </Link>
         </div>
-        <div className="w-1/3 sm:w-auto mb-4 sm:mb-0">
-          <img
-            src={FoodImg}
-            alt="Food"
-            className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-2"
-          />
-          <p className="text-sm sm:text-lg font-medium text-[#681414]">
-            Food →
-          </p>
-        </div>
-        <div className="w-1/3 sm:w-auto mb-4 sm:mb-0">
-          <img
-            src={AccommodationImg}
-            alt="Accommodation"
-            className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-2"
-          />
-          <p className="text-sm sm:text-lg font-medium text-[#681414]">
-            Accommodation →
-          </p>
-        </div>
-        <div className="w-1/3 sm:w-auto">
-          <img
-            src={RidesImg}
-            alt="Rides"
-            className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-2"
-          />
-          <p className="text-sm sm:text-lg font-medium text-[#681414]">
-            Rides →
-          </p>
-        </div>
+        <Link to="/listing?category=food">
+          <div className="w-1/3 sm:w-auto mb-4 sm:mb-0 hover:scale-105 transition-transform duration-300">
+            <img
+              src={FoodImg}
+              alt="Food"
+              className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-2"
+            />
+            <p className="text-sm sm:text-lg font-medium text-[#681414]">
+              Food →
+            </p>
+          </div>
+        </Link>
+        <Link to="/listing?category=accommodation">
+          <div className="w-1/3 sm:w-auto mb-4 sm:mb-0 hover:scale-105 transition-transform duration-300">
+            <img
+              src={AccommodationImg}
+              alt="Accommodation"
+              className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-2"
+            />
+            <p className="text-sm sm:text-lg font-medium text-[#681414]">
+              Accommodation →
+            </p>
+          </div>
+        </Link>
+        <Link to="/listing?category=rides">
+          <div className="w-1/3 sm:w-auto hover:scale-105 transition-transform duration-300">
+            <img
+              src={RidesImg}
+              alt="Rides"
+              className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-2"
+            />
+            <p className="text-sm sm:text-lg font-medium text-[#681414]">
+              Rides →
+            </p>
+          </div>
+        </Link>
       </div>
       <div className="flex justify-center mt-6 space-x-2">
         {slides.map((_, index) => (
