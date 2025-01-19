@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import HomeList from "../components/HomeList";
@@ -28,6 +28,10 @@ export default function Home() {
     "New Accommodation Listings Near You",
     "Affordable Rides",
   ];
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const food = [
     {

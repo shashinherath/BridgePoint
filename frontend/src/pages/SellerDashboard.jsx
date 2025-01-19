@@ -9,6 +9,7 @@ export default function SellerDashboard() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     if (userType !== "serviceprovider") {
       navigate("/");
     }
