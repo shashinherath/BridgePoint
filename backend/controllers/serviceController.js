@@ -5,6 +5,7 @@ const Accommodation = require("../models/Accommodation");
 const Food = require("../models/Food");
 const Guide = require("../models/LocalGuide");
 const Ride = require("../models/Ride");
+const Rate = require("../models/Rate");
 
 // Add item
 const addItem = async (req, res) => {
@@ -175,6 +176,9 @@ const getItemById = async (req, res) => {
 //Get all items
 const getItems = async (req, res) => {
   const serviceProvider = await ServiceProvider.findById(req.user.id);
+  if (!serviceProvider) {
+    return res.status(404).json({ message: "User not found" });
+  }
   const { providedservice } = serviceProvider;
   const providerId = req.user.id;
 
@@ -360,6 +364,39 @@ const getItemsForStudents = async (req, res) => {
   }
 };
 
+const addRating = async (req, res) => {
+  try {
+    const { providerId, rating } = req.body;
+    const studentId = req.user.id;
+
+    let existingRating = await Rate.findOne({ studentId, providerId });
+
+    if (existingRating) {
+      existingRating.rating = rating;
+      await existingRating.save();
+      res.json(existingRating);
+    } else {
+      const newRating = new Rate({ studentId, providerId, rating });
+      await newRating.save();
+      res.json(newRating);
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const getAverageRating = async (req, res) => {
+  try {
+    const { providerId } = req.params;
+    const ratings = await Rate.find({ providerId });
+    const average =
+      ratings.reduce((acc, curr) => acc + curr.rating, 0) / ratings.length;
+    res.json({ average: average || 0 });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   addItem,
   deleteItem,
@@ -367,4 +404,6 @@ module.exports = {
   getItems,
   updateItem,
   getItemsForStudents,
+  addRating,
+  getAverageRating,
 };

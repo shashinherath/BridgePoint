@@ -3,7 +3,7 @@ import Logo2 from "../assets/logo/Logo2.png";
 import background from "../assets/images/Background.jpg";
 import axios from "axios";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 function App() {
   const backendUrl =
@@ -51,7 +51,9 @@ function App() {
       {/* Left Section */}
       <div className="flex flex-1 flex-col justify-start py-4 px-4 sm:px-6 lg:w-1/2 lg:flex-none lg:px-20 xl:px-24">
         <div className="flex justify-center">
-          <img src={Logo2} alt="Bridge Point Logo" className="w-52" />
+          <Link to="/">
+            <img src={Logo2} alt="Bridge Point Logo" className="w-52" />
+          </Link>
         </div>
         <h1 className="text-center text-4xl font-bold mb-2">
           Welcome to BridgePoint
@@ -101,6 +103,15 @@ function App() {
           >
             Log in
           </button>
+          <p className="text-center mt-4">
+            Don't have an account?{" "}
+            <Link
+              to="/register"
+              className="text-orange-600 hover:text-orange-700 font-semibold"
+            >
+              Register
+            </Link>
+          </p>
         </form>
       </div>
 

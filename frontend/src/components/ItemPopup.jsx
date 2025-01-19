@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 const ItemPopup = ({ item, onClose, onEdit, onDelete, onAdd }) => {
-  // Add onAdd prop
   if (!item) return null;
 
   const backendUrl =
@@ -107,9 +106,13 @@ const ItemPopup = ({ item, onClose, onEdit, onDelete, onAdd }) => {
       className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
       onClick={handleOutsideClick}
     >
-      <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-        {" "}
-        {/* Set fixed width */}
+      <div className="bg-white p-6 rounded-lg shadow-lg w-96 relative">
+        <button
+          onClick={onClose}
+          className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+        >
+          ✕
+        </button>
         {isEditing ? (
           <>
             <div className="mb-4">
@@ -231,7 +234,6 @@ const ItemPopup = ({ item, onClose, onEdit, onDelete, onAdd }) => {
                   <option value="">Select Service type</option>
                   <option value="Guidance service">Guidance service</option>
                   <option value="Camping service">Camping service</option>
-                  <option value="Adventure service">Adventure service</option>
                 </select>
               </div>
             )}
@@ -256,8 +258,7 @@ const ItemPopup = ({ item, onClose, onEdit, onDelete, onAdd }) => {
               src={backendUrl + item.imageUrl}
               alt={item.name}
               className="w-full h-64 object-cover mb-4 rounded"
-            />{" "}
-            {/* Keep image size consistent */}
+            />
             <h2 className="text-2xl font-bold mb-2">{item.name}</h2>
             <p className="text-xl text-gray-800 mb-4">Rs.{item.price}</p>
             <p className="text-gray-700 mb-4">{item.description}</p>
@@ -300,7 +301,13 @@ const ItemPopup = ({ item, onClose, onEdit, onDelete, onAdd }) => {
       </div>
       {showDeleteConfirmation && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-80">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-80 relative">
+            <button
+              onClick={cancelDelete}
+              className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+            >
+              ✕
+            </button>
             <p className="text-center mb-4">
               Are you sure you want to delete this item?
             </p>

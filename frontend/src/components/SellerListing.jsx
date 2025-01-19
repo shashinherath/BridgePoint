@@ -4,7 +4,7 @@ import { PlusIcon } from "@heroicons/react/24/outline";
 import AddItemPopup from "./AddItemPopup";
 import ItemPopup from "./ItemPopup";
 
-const SellerListing = () => {
+export default function SellerListing({ searchTerm }) {
   const backendUrl =
     process.env.NODE_ENV === "development"
       ? "http://localhost:5000"
@@ -93,6 +93,10 @@ const SellerListing = () => {
     fetchFoodItems();
   };
 
+  const filteredFoodItems = foodItems.filter((item) =>
+    item.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div>
       {showMessage && (
@@ -106,7 +110,7 @@ const SellerListing = () => {
         </div>
       )}
       <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-4 gap-y-8 justify-items-center px-4 sm:px-8 md:px-16 lg:px-32 xl:px-64 place-items-center pt-10">
-        {foodItems.map((item, i) => (
+        {filteredFoodItems.map((item, i) => (
           <div
             key={i}
             onClick={() => handleItemClick(item)}
@@ -116,7 +120,7 @@ const SellerListing = () => {
               <img
                 src={backendUrl + item.imageUrl}
                 alt={item.name}
-                className="h-16 w-16 sm:h-24 sm:w-24 md:h-32 md:w-32 lg:h-40 lg:w-40"
+                className="h-16 w-16 sm:h-24 sm:w-24 md:h-32 md:w-32 lg:h-40 lg:w-40 rounded-full"
               />
             </div>
             <p className="flex justify-center font-bold text-sm pt-2">
@@ -150,6 +154,4 @@ const SellerListing = () => {
       </div>
     </div>
   );
-};
-
-export default SellerListing;
+}

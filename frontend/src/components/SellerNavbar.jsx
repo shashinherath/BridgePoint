@@ -1,8 +1,8 @@
 import { Fragment, useEffect, useState } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
-import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import { Link } from "react-router-dom";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import { Link, useNavigate } from "react-router-dom";
 import Logo from "../assets/logo/logo.png";
 import UpdateProfile from "./UpdateProfile";
 import axios from "axios";
@@ -11,7 +11,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function SellerNavbar() {
+export default function SellerNavbar({ onSearch }) {
   const backendUrl =
     process.env.NODE_ENV === "development"
       ? "http://localhost:5000"
@@ -21,6 +21,8 @@ export default function SellerNavbar() {
 
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [userData, setUserData] = useState({});
+  const navigate = useNavigate();
+  const [averageRating, setAverageRating] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -32,6 +34,7 @@ export default function SellerNavbar() {
         });
         console.log("User data:", response.data);
         setUserData(response.data);
+        fetchAverageRating(response.data._id);
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
@@ -51,6 +54,65 @@ export default function SellerNavbar() {
   const handleProfileSave = (formData) => {
     console.log("Profile updated:", formData);
     setIsProfileOpen(false);
+  };
+
+  const handleSignOut = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("userType");
+    localStorage.removeItem("providedservice");
+    navigate("/");
+  };
+
+  const handleGoHome = () => {
+    navigate("/");
+  };
+
+  const renderStarRating = (rating) => {
+    const fullStars = Math.floor(rating);
+    const halfStar = rating % 1 !== 0;
+    const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+
+    const stars = [];
+    for (let i = 1; i <= fullStars; i++) {
+      stars.push(
+        <span key={`full-${i}`} className="text-yellow-500">
+          ★
+        </span>
+      );
+    }
+    if (halfStar) {
+      stars.push(
+        <span key="half" className="text-yellow-300">
+          ★
+        </span>
+      );
+    }
+    for (let i = 1; i <= emptyStars; i++) {
+      stars.push(
+        <span key={`empty-${i}`} className="text-gray-300">
+          ★
+        </span>
+      );
+    }
+    return (
+      <div className="flex items-center text-lg">
+        {stars}
+        <span className="ml-2 text-white font-semibold">
+          {rating.toFixed(1)}
+        </span>
+      </div>
+    );
+  };
+
+  const fetchAverageRating = async (userId) => {
+    try {
+      const response = await axios.get(
+        `${backendUrl}/api/services/getaveragerating/${userId}`
+      );
+      setAverageRating(response.data.average);
+    } catch (error) {
+      console.error("Error fetching average rating:", error);
+    }
   };
 
   return (
@@ -80,8 +142,19 @@ export default function SellerNavbar() {
                       Dashboard
                     </h1>
                     <p className="text-xl text-white font-bold">
-                      {userData.providedservice} Seller
+                      {userData.providedservice} Provider
                     </p>
+                  </div>
+                </div>
+
+                <div className="hidden lg:flex lg:items-center lg:justify-center lg:flex-1 lg:w-0">
+                  <div className="flex-col items-center">
+                    <p className="text-white text-center font-semibold text-lg">
+                      My Rating:
+                    </p>
+                    <div className="ml-2">
+                      {renderStarRating(averageRating)}
+                    </div>
                   </div>
                 </div>
 
@@ -103,6 +176,7 @@ export default function SellerNavbar() {
                         className="block w-full rounded-md border-0 bg-orange-700 py-1.5 pl-10 pr-3 text-orange-300 placeholder:text-orange-400 focus:bg-white focus:text-orange-900 focus:ring-0 sm:text-sm sm:leading-6"
                         placeholder="Search"
                         type="search"
+                        onChange={(e) => onSearch(e.target.value)}
                       />
                     </div>
                   </div>
@@ -146,6 +220,20 @@ export default function SellerNavbar() {
                             {({ active }) => (
                               <a
                                 href="#"
+                                onClick={handleGoHome}
+                                className={classNames(
+                                  active ? "bg-gray-100" : "",
+                                  "block px-4 py-2 text-sm text-gray-700"
+                                )}
+                              >
+                                Go to Home
+                              </a>
+                            )}
+                          </Menu.Item>
+                          <Menu.Item>
+                            {({ active }) => (
+                              <a
+                                href="#"
                                 onClick={handleProfileClick}
                                 className={classNames(
                                   active ? "bg-gray-100" : "",
@@ -164,6 +252,7 @@ export default function SellerNavbar() {
                                   active ? "bg-gray-100" : "",
                                   "block px-4 py-2 text-sm text-gray-700"
                                 )}
+                                onClick={handleSignOut}
                               >
                                 Sign out
                               </a>
@@ -178,37 +267,6 @@ export default function SellerNavbar() {
             </div>
 
             <Disclosure.Panel className="lg:hidden">
-              <div className="space-y-1 px-2 pb-3 pt-2">
-                {/* Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" */}
-                <Disclosure.Button
-                  as="a"
-                  href="#"
-                  className="block rounded-md bg-orange-900 px-3 py-2 text-base font-medium text-white"
-                >
-                  Home
-                </Disclosure.Button>
-                <Disclosure.Button
-                  as="a"
-                  href="#"
-                  className="block rounded-md px-3 py-2 text-base font-medium text-orange-300 hover:bg-orange-700 hover:text-white"
-                >
-                  Team
-                </Disclosure.Button>
-                <Disclosure.Button
-                  as="a"
-                  href="#"
-                  className="block rounded-md px-3 py-2 text-base font-medium text-orange-300 hover:bg-orange-700 hover:text-white"
-                >
-                  About
-                </Disclosure.Button>
-                <Disclosure.Button
-                  as="a"
-                  href="#"
-                  className="block rounded-md px-3 py-2 text-base font-medium text-orange-300 hover:bg-orange-700 hover:text-white"
-                >
-                  Become a Partner
-                </Disclosure.Button>
-              </div>
               <div className="border-t border-orange-700 pb-3 pt-4">
                 <div className="flex items-center px-5">
                   <div className="flex-shrink-0">
@@ -239,7 +297,16 @@ export default function SellerNavbar() {
                   <Disclosure.Button
                     as="a"
                     href="#"
+                    onClick={handleGoHome}
                     className="block rounded-md px-3 py-2 text-base font-medium text-white hover:bg-orange-700 hover:text-white"
+                  >
+                    Go to Home
+                  </Disclosure.Button>
+                  <Disclosure.Button
+                    as="a"
+                    href="#"
+                    className="block rounded-md px-3 py-2 text-base font-medium text-white hover:bg-orange-700 hover:text-white"
+                    onClick={handleSignOut}
                   >
                     Sign out
                   </Disclosure.Button>

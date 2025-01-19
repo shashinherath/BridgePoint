@@ -1,4 +1,5 @@
 import React from "react";
+import { useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import HomeList from "../components/HomeList";
@@ -14,13 +15,14 @@ import Badulusirigama from "../assets/images/accommodation/Badulusirigama.png";
 import Badulusirigama2 from "../assets/images/accommodation/Badulusirigama2.png";
 import SecondMile from "../assets/images/accommodation/SecondMile.png";
 import Rambukpotha from "../assets/images/accommodation/Rambukpotha.png";
-import Bicycle from "../assets/images/rides/Bicycle.png";
-import EBike from "../assets/images/rides/EBike.png";
-import MotorBike from "../assets/images/rides/MotorBike.png";
-import Car from "../assets/images/rides/Car.png";
-import Van from "../assets/images/rides/Van.png";
+import Bicycle from "../assets/images/rideshome/Bicycle.png";
+import EBike from "../assets/images/rideshome/EBike.png";
+import MotorBike from "../assets/images/rideshome/MotorBike.png";
+import Car from "../assets/images/rideshome/Car.png";
+import Van from "../assets/images/rideshome/Van.png";
 
 export default function Home() {
+  const [searchTerm, setSearchTerm] = useState("");
   const title = [
     "Explore Popular Foods Near You",
     "New Accommodation Listings Near You",
@@ -31,22 +33,27 @@ export default function Home() {
     {
       name: "Rice and Curry",
       image: RiceAndCurry,
+      url: "/listing?category=food&item=rice",
     },
     {
       name: "Kottu",
       image: Kottu,
+      url: "/listing?category=food&item=kottu",
     },
     {
       name: "String Hoppers",
       image: StringHoppers,
+      url: "/listing?category=food&item=string",
     },
     {
       name: "Egg Hoppers",
       image: EggHoppers,
+      url: "/listing?category=food&item=egg",
     },
     {
       name: "Noodles",
       image: Noodles,
+      url: "/listing?category=food&item=noodles",
     },
   ];
 
@@ -54,22 +61,27 @@ export default function Home() {
     {
       name: "Malangamuwa Rd",
       image: Malangamuwa,
+      url: "/listing?category=accommodation&item=malangamuwa",
     },
     {
       name: "Badulusirigama",
       image: Badulusirigama,
+      url: "/listing?category=accommodation&item=badulusirigama",
     },
     {
       name: "Badulusirigama2",
       image: Badulusirigama2,
+      url: "/listing?category=accommodation&item=badulusirigama",
     },
     {
       name: "2nd Mile",
       image: SecondMile,
+      url: "/listing?category=accommodation&item=2ndmile",
     },
     {
       name: "Rambukpotha",
       image: Rambukpotha,
+      url: "/listing?category=accommodation&item=rambukpotha",
     },
   ];
 
@@ -77,28 +89,33 @@ export default function Home() {
     {
       name: "Bicycle",
       image: Bicycle,
+      url: "/listing?category=rides&item=bicycle",
     },
     {
       name: "E Bike",
       image: EBike,
+      url: "/listing?category=rides&item=ebike",
     },
     {
       name: "Motor Bike",
       image: MotorBike,
+      url: "/listing?category=rides&item=motorbike",
     },
     {
       name: "Car",
       image: Car,
+      url: "/listing?category=rides&item=car",
     },
     {
       name: "Van",
       image: Van,
+      url: "/listing?category=rides&item=van",
     },
   ];
 
   return (
     <div className="flex flex-col">
-      <Navbar />
+      <Navbar onSearch={setSearchTerm} searchItem={searchTerm} />
       <Hero />
       <div className="flex flex-col justify-center items-center flex-grow">
         <AdBanner />

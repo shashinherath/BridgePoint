@@ -1,98 +1,136 @@
-import React from 'react';
-import RicenCurry from "../assets/images/food/RicenCurry.png";
-import { FaStar, FaRegStar } from 'react-icons/fa';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import {
+  FaStar,
+  FaMapMarkerAlt,
+  FaPhone,
+  FaEnvelope,
+  FaStore,
+  FaCity,
+} from "react-icons/fa";
+import { useParams } from "react-router-dom";
 
 const SellerProfile = () => {
+  const backendUrl =
+    process.env.NODE_ENV === "development"
+      ? "http://localhost:5000"
+      : process.env.Backend_URL;
+
+  const token = localStorage.getItem("token");
+
+  const [userData, setUserData] = useState({});
+  const [averageRating, setAverageRating] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+  const { id } = useParams();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      try {
+        const [userResponse, ratingResponse] = await Promise.all([
+          axios.get(`${backendUrl}/api/user/getprovider/${id}`, {
+            headers: { Authorization: token },
+          }),
+          axios.get(`${backendUrl}/api/services/getaveragerating/${id}`, {
+            headers: { Authorization: token },
+          }),
+        ]);
+        setUserData(userResponse.data);
+        setAverageRating(ratingResponse.data.average);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchData();
+  }, [id]);
+
+  if (isLoading) {
     return (
-        <div className="min-h-screen bg-gradient-to-r from-blue-50 to-blue-100 p-8">
-            <div className="max-w-7xl mx-auto bg-white p-8 shadow-2xl rounded-lg">
-                {/* Food Seller Information Section */}
-                <section className="flex flex-col md:flex-row py-8 border-b border-gray-300">
-                    <div className="flex-shrink-0">
-                        <div className="w-48 h-48 rounded-full overflow-hidden shadow-xl transform hover:scale-105 transition-transform duration-300">
-                            <img src={RicenCurry} alt="Rice and Curry" className="w-full h-full object-cover" />
-                        </div>
-                    </div>
-                    <div className="mt-6 md:mt-0 md:ml-8">
-                        <h1 className="text-4xl font-bold text-gray-900">CDK</h1>
-                        <div className="flex items-center mt-4">
-                            <FaStar className="text-yellow-500" />
-                            <FaStar className="text-yellow-500" />
-                            <FaStar className="text-yellow-500" />
-                            <FaStar className="text-yellow-500" />
-                            <FaRegStar className="text-yellow-500" />
-                            <span className="ml-2 text-gray-600">(123 Reviews)</span>
-                        </div>
-                        <div className="mt-6">
-                            <div className="text-lg text-gray-700 font-semibold">Contact: 0710849736</div>
-                            <div className="mt-2 text-lg text-gray-700 font-semibold">Passara Road, Badulla</div>
-                            <a
-                                href="https://www.google.com/maps/place/C.D.K+Hotel/@6.9839635,81.0767768,17z/data=!3m1!4b1!4m6!3m5!1s0x3ae4612b44087e3d:0x607c7aac214437db!8m2!3d6.9839635!4d81.0793517!16s%2Fg%2F11h37ryzvy?entry=ttu&g_ep=EgoyMDI0MTIxMS4wIKXMDSoASAFQAw%3D%3D"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="mt-2 text-blue-600 hover:text-blue-800 transition duration-300"
-                            >
-                                View on Map
-                            </a>
-                        </div>
-                    </div>
-                </section>
-
-                {/* Description Section */}
-                <section className="py-8 border-b border-gray-300">
-                    <h2 className="text-3xl font-semibold text-gray-900">Description</h2>
-                    <p className="mt-4 text-gray-700 leading-relaxed">
-                        CDK offers a variety of delicious meals, specializing in traditional Sri Lankan cuisine. The food is prepared with fresh ingredients and served hot. Our Rice & Curry is a customer favorite, known for its rich flavors and satisfying portions.
-                    </p>
-                </section>
-
-                {/* Menu Section */}
-                <section className="py-8 border-b border-gray-300">
-                    <h2 className="text-3xl font-semibold text-gray-900">Menu</h2>
-                    <div className="mt-6">
-                        <h3 className="text-2xl font-semibold text-gray-900">Main Course</h3>
-                        <div className="flex justify-between items-center mt-4 hover:bg-gray-100 p-2 rounded">
-                            <p className="text-gray-700">Rice & Curry - Rs. 150.00</p>
-                        </div>
-                        <div className="flex justify-between items-center mt-4 hover:bg-gray-100 p-2 rounded">
-                            <p className="text-gray-700">Veg Kottu - Rs. 350.00</p>
-                        </div>
-                        <div className="flex justify-between items-center mt-4 hover:bg-gray-100 p-2 rounded">
-                            <p className="text-gray-700">Noodles - Rs. 200.00</p>
-                        </div>
-                    </div>
-                    <div className="mt-6">
-                        <h3 className="text-2xl font-semibold text-gray-900">Starters</h3>
-                        <div className="flex justify-between items-center mt-4 hover:bg-gray-100 p-2 rounded">
-                            <p className="text-gray-700">Rolls - Rs. 50.00</p>
-                        </div>
-                        <div className="flex justify-between items-center mt-4 hover:bg-gray-100 p-2 rounded">
-                            <p className="text-gray-700">Fish Bun - Rs. 50.00</p>
-                        </div>
-                        <div className="flex justify-between items-center mt-4 hover:bg-gray-100 p-2 rounded">
-                            <p className="text-gray-700">Sinisambal Bun - Rs. 60.00</p>
-                        </div>
-                    </div>
-                </section>
-
-                {/* Reviews Section */}
-                <section className="py-8">
-                    <h2 className="text-3xl font-semibold text-gray-900">Customer Reviews</h2>
-                    <div className="mt-6">
-                        <div className="mb-4 bg-gray-100 p-4 rounded shadow-sm">
-                            <p className="text-gray-700">Great food! - ★★★★★</p>
-                        </div>
-                        <form className="mt-6">
-                            <h3 className="text-2xl font-semibold text-gray-900">Submit a Review</h3>
-                            <textarea className="mt-4 w-full p-4 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Write your review..."></textarea>
-                            <button type="submit" className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition">Submit</button>
-                        </form>
-                        <div className="mt-6 text-gray-700 text-lg">Rating: 4.5/5</div>
-                    </div>
-                </section>
-            </div>
-        </div>
+      <div className="min-h-screen flex justify-center items-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-orange-500"></div>
+      </div>
     );
+  }
+
+  return (
+    <div className="bg-gray-100">
+      <div className="container mx-auto px-4 py-6 flex flex-col md:flex-row gap-8 max-w-6xl">
+        {/* Hero Section */}
+        <div className="bg-gradient-to-r from-orange-600 to-orange-800 text-white p-8 rounded-lg flex-1">
+          <div className="flex flex-col items-center md:items-start gap-8">
+            <img
+              src={backendUrl + userData.profileImageUrl}
+              alt={userData.companyname}
+              className="w-48 h-48 rounded-full border-4 border-white shadow-xl object-cover"
+            />
+            <div>
+              <h1 className="text-4xl font-bold mb-4">
+                {userData.companyname}
+              </h1>
+              <div className="flex items-center gap-2 mb-4">
+                {[...Array(5)].map((_, index) => (
+                  <FaStar
+                    key={index}
+                    className={
+                      index < averageRating
+                        ? "text-yellow-400"
+                        : "text-gray-300"
+                    }
+                    size={24}
+                  />
+                ))}
+                <span className="text-xl ml-2">
+                  ({averageRating.toFixed(1)})
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <FaStore className="text-xl" />
+                <span className="text-lg">{userData.providedservice}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        {/* Contact Information */}
+        <div className="bg-white rounded-lg shadow-md p-6 flex-1">
+          <h2 className="text-2xl font-semibold mb-6">Contact Information</h2>
+          <div className="space-y-4">
+            <div className="flex items-center gap-4">
+              <FaMapMarkerAlt className="text-orange-600 text-xl" />
+              <div>
+                <p className="text-gray-600">Address</p>
+                <p className="font-medium">{userData.address}</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-4">
+              <FaCity className="text-orange-600 text-xl" />
+              <div>
+                <p className="text-gray-600">Location</p>
+                <p className="font-medium">
+                  {userData.city}, {userData.state}
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-4">
+              <FaPhone className="text-orange-600 text-xl" />
+              <div>
+                <p className="text-gray-600">Phone</p>
+                <p className="font-medium">{userData.mobilenumber}</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-4">
+              <FaEnvelope className="text-orange-600 text-xl" />
+              <div>
+                <p className="text-gray-600">Email</p>
+                <p className="font-medium">{userData.email}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default SellerProfile;

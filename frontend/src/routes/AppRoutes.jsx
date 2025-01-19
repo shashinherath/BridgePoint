@@ -16,7 +16,8 @@ export default function AppRoutes() {
         <Route path="register" element={<Register />} />
         <Route path="listing" element={<Listing />} />
         <Route path="dashboard" element={<SellerDashboard />} />
-        <Route path="sellerview" element={<FoodSellerDetails/>}/>
+        <Route path="sellerview/:id" element={<FoodSellerDetails />} />
+        <Route path="*" element={<div>404 Not Found</div>} />
       </Routes>
     </>
   );

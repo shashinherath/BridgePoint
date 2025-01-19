@@ -6,6 +6,8 @@ const {
   getItems,
   updateItem,
   getItemsForStudents,
+  addRating,
+  getAverageRating,
 } = require("../controllers/serviceController");
 const authMiddleware = require("../middleware/authMiddleware");
 const upload = require("../middleware/uploadMiddleware");
@@ -45,5 +47,15 @@ router.put(
 // @desc    Get all service items for students
 // @access  Public
 router.get("/getitemsforstudents/:serviceType", getItemsForStudents);
+
+// @route   POST /api/services/addrating/:id
+// @desc    Add a rating for a service provider
+// @access  Private
+router.post("/addrating", authMiddleware, addRating);
+
+// @route   GET /api/services/getaveragerating/:id
+// @desc    Get the average rating for a service provider
+// @access  Public
+router.get("/getaveragerating/:providerId", getAverageRating);
 
 module.exports = router;

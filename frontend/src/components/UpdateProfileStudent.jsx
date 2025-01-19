@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const UpdateProfile = ({ onClose, onSave }) => {
+const UpdateProfileStudent = ({ onClose, onSave }) => {
   const backendUrl =
     process.env.NODE_ENV === "development"
       ? "http://localhost:5000"
@@ -14,13 +14,10 @@ const UpdateProfile = ({ onClose, onSave }) => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const navigate = useNavigate();
 
-  const [companyName, setCompanyName] = useState("");
-  const [address, setAddress] = useState("");
-  const [city, setCity] = useState("");
-  const [state, setState] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [mobileNumber, setMobileNumber] = useState("");
-  const [providedService, setProvidedService] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [profileImage, setProfileImage] = useState("");
@@ -38,13 +35,10 @@ const UpdateProfile = ({ onClose, onSave }) => {
         });
         const user = response.data;
         setUserData(user);
-        setCompanyName(user.companyname);
-        setAddress(user.address);
-        setCity(user.city);
-        setState(user.state);
+        setFirstName(user.firstname);
+        setLastName(user.lastname);
         setEmail(user.email);
         setMobileNumber(user.mobilenumber);
-        setProvidedService(user.providedservice);
         setExistingProfileImage(user.profileImageUrl);
       } catch (error) {
         console.error("Error fetching user data:", error);
@@ -79,13 +73,10 @@ const UpdateProfile = ({ onClose, onSave }) => {
     if (passwordError) return;
 
     const formData = new FormData();
-    formData.append("companyname", companyName);
-    formData.append("address", address);
-    formData.append("city", city);
-    formData.append("state", state);
+    formData.append("firstname", firstName);
+    formData.append("lastname", lastName);
     formData.append("email", email);
     formData.append("mobilenumber", mobileNumber);
-    formData.append("providedservice", providedService);
     if (password) formData.append("password", password);
     if (profileImage) formData.append("profileImage", profileImage);
 
@@ -138,7 +129,7 @@ const UpdateProfile = ({ onClose, onSave }) => {
           <div className="p-2 md:p-4">
             <div className="w-full px-6 pb-8 mt-8 sm:max-w-xl sm:rounded-lg">
               <h2 className="pl-1 text-2xl font-bold sm:text-3xl">
-                {userData.providedservice} Provider Profile
+                Student Profile
               </h2>
               <div className="grid max-w-2xl mx-auto mt-8">
                 <div className="flex flex-col items-center space-y-5 sm:flex-row sm:space-y-0">
@@ -177,76 +168,40 @@ const UpdateProfile = ({ onClose, onSave }) => {
                 </div>
                 <div className="items-center mt-8 sm:mt-14 text-[#202142]">
                   <form onSubmit={handleSubmit}>
-                    <div className="mb-4 sm:mb-6ull">
-                      <label
-                        htmlFor="companyname"
-                        className="block mb-2 text-sm font-medium text-gray-600"
-                      >
-                        Company Name
-                      </label>
-                      <input
-                        type="text"
-                        id="companyname"
-                        name="companyname"
-                        className="bg-orange-50 border border-orange-300 text-sm rounded-lg focus:ring-orange-500 focus:border-orange-500 block w-full p-2.5"
-                        placeholder="Your company name"
-                        value={companyName}
-                        onChange={(e) => setCompanyName(e.target.value)}
-                        required
-                      />
-                    </div>
-                    <div className="mb-2 sm:mb-6">
-                      <label
-                        htmlFor="address"
-                        className="block mb-2 text-sm font-medium text-gray-600"
-                      >
-                        Address
-                      </label>
-                      <input
-                        type="text"
-                        id="text"
-                        name="address"
-                        className="bg-orange-50 border border-orange-300 text-sm rounded-lg focus:ring-orange-500 focus:border-orange-500 block w-full p-2.5"
-                        placeholder="Your address"
-                        value={address}
-                        onChange={(e) => setAddress(e.target.value)}
-                        required
-                      />
-                    </div>
                     <div className="flex flex-col items-center w-full mb-2 space-x-0 space-y-2 sm:flex-row sm:space-x-4 sm:space-y-0 sm:mb-6">
                       <div className="w-full">
                         <label
-                          htmlFor="city"
+                          htmlFor="firstname"
                           className="block mb-2 text-sm font-medium text-gray-600"
                         >
-                          City
+                          First Name
                         </label>
                         <input
                           type="text"
-                          id="city"
-                          name="city"
+                          id="firstname"
+                          name="firstname"
                           className="bg-orange-50 border border-orange-300 text-sm rounded-lg focus:ring-orange-500 focus:border-orange-500 block w-full p-2.5"
-                          placeholder="Your city"
-                          value={city}
-                          onChange={(e) => setCity(e.target.value)}
+                          placeholder="Your first name"
+                          value={firstName}
+                          onChange={(e) => setFirstName(e.target.value)}
                           required
                         />
                       </div>
                       <div className="w-full">
                         <label
-                          htmlFor="state"
+                          htmlFor="lastname"
                           className="block mb-2 text-sm font-medium text-gray-600"
                         >
-                          State
+                          Last Name
                         </label>
                         <input
                           type="text"
-                          id="state"
-                          name="state"
+                          id="lastname"
+                          name="lastname"
                           className="bg-orange-50 border border-orange-300 text-sm rounded-lg focus:ring-orange-500 focus:border-orange-500 block w-full p-2.5"
-                          placeholder="Your state"
-                          value={state}
-                          onChange={(e) => setState(e.target.value)}
+                          placeholder="Your lastname"
+                          value={lastName}
+                          onChange={(e) => setLastName(e.target.value)}
                           required
                         />
                       </div>
@@ -286,28 +241,6 @@ const UpdateProfile = ({ onClose, onSave }) => {
                         onChange={(e) => setMobileNumber(e.target.value)}
                         required
                       />
-                    </div>
-                    <div className="mb-2 sm:mb-6">
-                      <label
-                        htmlFor="providedservice"
-                        className="block mb-2 text-sm font-medium text-gray-600"
-                      >
-                        Provided Service
-                      </label>
-                      <select
-                        id="providedservice"
-                        name="providedservice"
-                        className="bg-orange-50 border border-orange-300 text-sm rounded-lg focus:ring-orange-500 focus:border-orange-500 block w-full p-2.5"
-                        placeholder="Your provided service"
-                        value={providedService}
-                        onChange={(e) => setProvidedService(e.target.value)}
-                        required
-                      >
-                        <option>Food</option>
-                        <option>Accommodation</option>
-                        <option>Rides</option>
-                        <option>Guide</option>
-                      </select>
                     </div>
                     <div className="mb-2 sm:mb-6">
                       <label
@@ -400,4 +333,4 @@ const UpdateProfile = ({ onClose, onSave }) => {
   );
 };
 
-export default UpdateProfile;
+export default UpdateProfileStudent;

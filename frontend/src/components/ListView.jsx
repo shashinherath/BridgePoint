@@ -1,34 +1,47 @@
-import React, { useState } from "react";
-import RicenCurry from "../assets/images/food/RicenCurry.png";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { Link } from "react-router-dom";
 import { FaTimes } from "react-icons/fa";
+import { PaperAirplaneIcon } from "@heroicons/react/24/outline";
 
-const ListView = ({ selectedItem, closePopup }) => {
+const ListView = ({ selectedItem, closePopup, category }) => {
   const backendUrl =
     process.env.NODE_ENV === "development"
       ? "http://localhost:5000"
       : process.env.Backend_URL;
 
   const [rating, setRating] = useState(0);
-  const [hoverRating, setHoverRating] = useState(0);
-  const [shopRating, setShopRating] = useState(3.5); // Initial shop rating
-  const [ratingCount, setRatingCount] = useState(1); // Initial rating count
+  const [hover, setHover] = useState(0);
+  const [averageRating, setAverageRating] = useState(0);
+  const token = localStorage.getItem("token");
 
-  const handleRating = (value) => {
-    const newRatingCount = ratingCount + 1;
-    const newShopRating = (shopRating * ratingCount + value) / newRatingCount;
+  useEffect(() => {
+    fetchAverageRating();
+  }, []);
 
-    setRating(value);
-    setShopRating(newShopRating);
-    setRatingCount(newRatingCount);
+  const fetchAverageRating = async () => {
+    try {
+      const response = await axios.get(
+        `${backendUrl}/api/services/getaveragerating/${selectedItem.providerId._id}`
+      );
+      setAverageRating(response.data.average);
+    } catch (error) {
+      console.error("Error fetching average rating:", error);
+    }
   };
 
-  const handleMouseEnter = (value) => {
-    setHoverRating(value);
-  };
-
-  const handleMouseLeave = () => {
-    setHoverRating(0);
+  const handleRating = async (value) => {
+    try {
+      await axios.post(
+        `${backendUrl}/api/services/addrating`,
+        { providerId: selectedItem.providerId._id, rating: value },
+        { headers: { Authorization: token } }
+      );
+      setRating(value);
+      fetchAverageRating();
+    } catch (error) {
+      console.error("Error adding rating:", error);
+    }
   };
 
   const renderStarRating = (rating) => {
@@ -96,9 +109,26 @@ const ListView = ({ selectedItem, closePopup }) => {
             <p className="text-lg font-bold text-green-700 mb-1">
               Price: Rs. {selectedItem.price}.00
             </p>
-            <p className="text-lg text-blue-700">
-              Portion size: {selectedItem.portionSize}
-            </p>
+            {category === "food" && (
+              <p className="text-lg text-blue-700">
+                Portion size: {selectedItem.portionSize}
+              </p>
+            )}
+            {category === "accommodation" && (
+              <p className="text-lg text-blue-700">
+                Accommodation size: {selectedItem.accommodationSize}
+              </p>
+            )}
+            {category === "rides" && (
+              <p className="text-lg text-blue-700">
+                Seats: {selectedItem.seats}
+              </p>
+            )}
+            {category === "guide" && (
+              <p className="text-lg text-blue-700">
+                Guide Type: {selectedItem.guideType}
+              </p>
+            )}
           </div>
           {/* Other Information Segment */}
           <div className="w-1/3 p-4">
@@ -115,28 +145,34 @@ const ListView = ({ selectedItem, closePopup }) => {
 
               <div className="flex items-center justify-center space-x-2 mb-2">
                 <span className="text-gray-500 text-lg">Shop Rating:</span>
-                {renderStarRating(shopRating)}
+                {renderStarRating(averageRating)}
               </div>
               <div className="flex justify-center items-center space-x-3 mb-4 text-2xl">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <span
                     key={star}
                     className={`cursor-pointer ${
-                      hoverRating >= star || rating >= star
+                      hover >= star || rating >= star
                         ? "text-yellow-500"
                         : "text-gray-300"
                     } transition duration-300 hover:scale-125`}
-                    onClick={() => handleRating(star)}
-                    onMouseEnter={() => handleMouseEnter(star)}
-                    onMouseLeave={handleMouseLeave}
+                    onClick={() => setRating(star)}
+                    onMouseEnter={() => setHover(star)}
+                    onMouseLeave={() => setHover(0)}
                   >
                     ★
                   </span>
                 ))}
+                <button
+                  className="bg-orange-700 text-white text-sm py-1 px-2 rounded hover:bg-orange-800 transition duration-300 transform hover:scale-110 ml-4"
+                  onClick={() => handleRating(rating)}
+                >
+                  <PaperAirplaneIcon className="h-3 w-3" />
+                </button>
               </div>
             </div>
             <div className="text-center">
-              <Link to="/sellerview">
+              <Link to={`/sellerview/${selectedItem.providerId._id}`}>
                 <button className="bg-orange-700 text-white py-1 px-2 rounded hover:bg-orange-800 transition duration-300 transform hover:scale-110">
                   View Shop
                 </button>
