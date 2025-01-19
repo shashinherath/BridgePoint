@@ -106,7 +106,7 @@ const UpdateProfile = ({ onClose, onSave }) => {
 
   return (
     <div
-      className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 p-4"
+      className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 p-4 z-10"
       onClick={onClose}
     >
       <div
