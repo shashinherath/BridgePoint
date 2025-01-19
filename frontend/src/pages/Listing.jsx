@@ -14,6 +14,7 @@ export default function Listing() {
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     setSearchTerm(searchItem);
   }, [searchItem]);
 
