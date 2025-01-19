@@ -234,7 +234,6 @@ const ItemPopup = ({ item, onClose, onEdit, onDelete, onAdd }) => {
                   <option value="">Select Service type</option>
                   <option value="Guidance service">Guidance service</option>
                   <option value="Camping service">Camping service</option>
-                  <option value="Adventure service">Adventure service</option>
                 </select>
               </div>
             )}
