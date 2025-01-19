@@ -172,7 +172,7 @@ const ListView = ({ selectedItem, closePopup, category }) => {
               </div>
             </div>
             <div className="text-center">
-              <Link to="/sellerview">
+              <Link to={`/sellerview/${selectedItem.providerId._id}`}>
                 <button className="bg-orange-700 text-white py-1 px-2 rounded hover:bg-orange-800 transition duration-300 transform hover:scale-110">
                   View Shop
                 </button>
