@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const UpdateProfile = ({ onClose, onSave }) => {
   const backendUrl =
@@ -10,6 +11,8 @@ const UpdateProfile = ({ onClose, onSave }) => {
   const token = localStorage.getItem("token");
 
   const [userData, setUserData] = useState({});
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const navigate = useNavigate();
 
   const [companyName, setCompanyName] = useState("");
   const [address, setAddress] = useState("");
@@ -104,6 +107,18 @@ const UpdateProfile = ({ onClose, onSave }) => {
     }
   };
 
+  const handleDelete = async () => {
+    try {
+      await axios.delete(`${backendUrl}/api/user/deleteuser`, {
+        headers: { Authorization: token },
+      });
+      localStorage.clear();
+      navigate("/login");
+    } catch (error) {
+      console.error("Error deleting account:", error);
+    }
+  };
+
   return (
     <div
       className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 p-4 z-10"
@@ -154,6 +169,7 @@ const UpdateProfile = ({ onClose, onSave }) => {
                     <button
                       type="button"
                       className="py-3.5 px-7 text-base font-medium text-red-500 focus:outline-none bg-white rounded-lg border border-red-200 hover:bg-red-500 hover:text-white focus:z-10 focus:ring-4 focus:ring-red-200"
+                      onClick={() => setShowDeleteModal(true)}
                     >
                       Delete profile
                     </button>
@@ -353,6 +369,33 @@ const UpdateProfile = ({ onClose, onSave }) => {
           </div>
         </main>
       </div>
+      {showDeleteModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-8 max-w-md w-full m-4">
+            <h2 className="text-2xl font-bold text-red-600 mb-4">
+              Delete Account
+            </h2>
+            <p className="text-gray-600 mb-6">
+              Are you sure you want to delete your account? This action cannot
+              be undone. All your data will be permanently removed.
+            </p>
+            <div className="flex justify-end gap-4">
+              <button
+                onClick={() => setShowDeleteModal(false)}
+                className="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDelete}
+                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+              >
+                Delete Permanently
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
