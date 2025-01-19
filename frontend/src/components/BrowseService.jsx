@@ -19,6 +19,8 @@ import MotorBike from "../assets/images/rides/MotorBike.png";
 import Van from "../assets/images/rides/Van.png";
 import DoubleCab from "../assets/images/rides/DoubleCab.png";
 import Bus from "../assets/images/rides/Bus.png";
+import TourGuide from "../assets/images/guide/TourGuide.png";
+import Tent from "../assets/images/guide/Tent.png";
 
 export default function BrowseService({ category }) {
   const categories = {
@@ -136,7 +138,18 @@ export default function BrowseService({ category }) {
     guide: {
       title: "Discover the Best of Sri Lanka!",
       subtitle: "Find the Perfect Guide for Your Adventure!",
-      items: [], // Add guide items here
+      items: [
+        {
+          name: "Tour Guide",
+          image: TourGuide,
+          url: "/listing?category=guide&item=tour",
+        },
+        {
+          name: "Camping ",
+          image: Tent,
+          url: "/listing?category=guide&item=tent",
+        },
+      ],
     },
   };
 

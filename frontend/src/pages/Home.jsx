@@ -15,11 +15,11 @@ import Badulusirigama from "../assets/images/accommodation/Badulusirigama.png";
 import Badulusirigama2 from "../assets/images/accommodation/Badulusirigama2.png";
 import SecondMile from "../assets/images/accommodation/SecondMile.png";
 import Rambukpotha from "../assets/images/accommodation/Rambukpotha.png";
-import Bicycle from "../assets/images/rides/Bicycle.png";
-import EBike from "../assets/images/rides/EBike.png";
-import MotorBike from "../assets/images/rides/MotorBike.png";
-import Car from "../assets/images/rides/Car.png";
-import Van from "../assets/images/rides/Van.png";
+import Bicycle from "../assets/images/rideshome/Bicycle.png";
+import EBike from "../assets/images/rideshome/EBike.png";
+import MotorBike from "../assets/images/rideshome/MotorBike.png";
+import Car from "../assets/images/rideshome/Car.png";
+import Van from "../assets/images/rideshome/Van.png";
 
 export default function Home() {
   const [searchTerm, setSearchTerm] = useState("");
