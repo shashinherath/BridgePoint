@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useState } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
-import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "../assets/logo/logo.png";
 import UpdateProfile from "./UpdateProfile";
@@ -22,6 +22,7 @@ export default function SellerNavbar({ onSearch }) {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [userData, setUserData] = useState({});
   const navigate = useNavigate();
+  const [averageRating, setAverageRating] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,6 +34,7 @@ export default function SellerNavbar({ onSearch }) {
         });
         console.log("User data:", response.data);
         setUserData(response.data);
+        fetchAverageRating(response.data._id);
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
@@ -65,6 +67,54 @@ export default function SellerNavbar({ onSearch }) {
     navigate("/");
   };
 
+  const renderStarRating = (rating) => {
+    const fullStars = Math.floor(rating);
+    const halfStar = rating % 1 !== 0;
+    const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+
+    const stars = [];
+    for (let i = 1; i <= fullStars; i++) {
+      stars.push(
+        <span key={`full-${i}`} className="text-yellow-500">
+          ★
+        </span>
+      );
+    }
+    if (halfStar) {
+      stars.push(
+        <span key="half" className="text-yellow-300">
+          ★
+        </span>
+      );
+    }
+    for (let i = 1; i <= emptyStars; i++) {
+      stars.push(
+        <span key={`empty-${i}`} className="text-gray-300">
+          ★
+        </span>
+      );
+    }
+    return (
+      <div className="flex items-center text-lg">
+        {stars}
+        <span className="ml-2 text-white font-semibold">
+          {rating.toFixed(1)}
+        </span>
+      </div>
+    );
+  };
+
+  const fetchAverageRating = async (userId) => {
+    try {
+      const response = await axios.get(
+        `${backendUrl}/api/services/getaveragerating/${userId}`
+      );
+      setAverageRating(response.data.average);
+    } catch (error) {
+      console.error("Error fetching average rating:", error);
+    }
+  };
+
   return (
     <>
       <Disclosure as="nav" className="bg-orange-800">
@@ -94,6 +144,17 @@ export default function SellerNavbar({ onSearch }) {
                     <p className="text-xl text-white font-bold">
                       {userData.providedservice} Provider
                     </p>
+                  </div>
+                </div>
+
+                <div className="hidden lg:flex lg:items-center lg:justify-center lg:flex-1 lg:w-0">
+                  <div className="flex-col items-center">
+                    <p className="text-white text-center font-semibold text-lg">
+                      My Rating:
+                    </p>
+                    <div className="ml-2">
+                      {renderStarRating(averageRating)}
+                    </div>
                   </div>
                 </div>
 
