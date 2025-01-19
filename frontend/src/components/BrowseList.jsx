@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ListView from "./ListView";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function BrowseList({ category, searchTerm }) {
   const backendUrl =
@@ -13,6 +14,8 @@ export default function BrowseList({ category, searchTerm }) {
   const [items, setItems] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
+  const userType = localStorage.getItem("userType");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -62,7 +65,7 @@ export default function BrowseList({ category, searchTerm }) {
         {filteredItems.map((item, index) => (
           <div
             key={item.id || index}
-            className="bg-white w-72 h-64 m-4 rounded-lg shadow-xl"
+            className="bg-white w-72 h-64 m-4 rounded-lg shadow-xl transform transition-transform duration-300 hover:scale-105 hover:shadow-2xl"
           >
             <img
               src={backendUrl + item.imageUrl}
@@ -70,15 +73,22 @@ export default function BrowseList({ category, searchTerm }) {
               className="w-full h-32 object-cover"
             />
             <div className="p-4">
-              <h1 className="text-xl font-semibold">
+              <h1 className="text-xl font-semibold">{item.name}</h1>
+              <p className="text-sm text-gray-500">
                 {item.providerId.companyname}
-              </h1>
-              <p className="text-sm text-gray-500">{item.name}</p>
+              </p>
               <div className="mt-4 flex justify-between items-center">
                 <p className="text-xl font-bold">Rs. {item.price}</p>
                 <button
                   className="bg-orange-800 text-white px-4 py-2 rounded-md"
-                  onClick={() => openPopup(item)}
+                  onClick={() => {
+                    if (!userType) {
+                      navigate("/login");
+                      return;
+                    } else {
+                      openPopup(item);
+                    }
+                  }}
                 >
                   View
                 </button>
