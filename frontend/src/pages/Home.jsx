@@ -33,22 +33,27 @@ export default function Home() {
     {
       name: "Rice and Curry",
       image: RiceAndCurry,
+      url: "/listing?category=food&item=rice",
     },
     {
       name: "Kottu",
       image: Kottu,
+      url: "/listing?category=food&item=kottu",
     },
     {
       name: "String Hoppers",
       image: StringHoppers,
+      url: "/listing?category=food&item=string",
     },
     {
       name: "Egg Hoppers",
       image: EggHoppers,
+      url: "/listing?category=food&item=egg",
     },
     {
       name: "Noodles",
       image: Noodles,
+      url: "/listing?category=food&item=noodles",
     },
   ];
 
@@ -56,22 +61,27 @@ export default function Home() {
     {
       name: "Malangamuwa Rd",
       image: Malangamuwa,
+      url: "/listing?category=accommodation&item=malangamuwa",
     },
     {
       name: "Badulusirigama",
       image: Badulusirigama,
+      url: "/listing?category=accommodation&item=badulusirigama",
     },
     {
       name: "Badulusirigama2",
       image: Badulusirigama2,
+      url: "/listing?category=accommodation&item=badulusirigama",
     },
     {
       name: "2nd Mile",
       image: SecondMile,
+      url: "/listing?category=accommodation&item=2ndmile",
     },
     {
       name: "Rambukpotha",
       image: Rambukpotha,
+      url: "/listing?category=accommodation&item=rambukpotha",
     },
   ];
 
@@ -79,22 +89,27 @@ export default function Home() {
     {
       name: "Bicycle",
       image: Bicycle,
+      url: "/listing?category=rides&item=bicycle",
     },
     {
       name: "E Bike",
       image: EBike,
+      url: "/listing?category=rides&item=ebike",
     },
     {
       name: "Motor Bike",
       image: MotorBike,
+      url: "/listing?category=rides&item=motorbike",
     },
     {
       name: "Car",
       image: Car,
+      url: "/listing?category=rides&item=car",
     },
     {
       name: "Van",
       image: Van,
+      url: "/listing?category=rides&item=van",
     },
   ];
 
