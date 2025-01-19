@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import Logo2 from "../assets/logo/Logo2.png";
 import background from "../assets/images/Background.jpg";
 
@@ -88,7 +88,9 @@ const Register = () => {
       {/* Left Section */}
       <div className="flex flex-1 flex-col justify-start py-4 px-4 sm:px-6 lg:w-1/2 lg:flex-none lg:px-20 xl:px-24 overflow-y-auto">
         <div className="flex justify-center">
-          <img src={Logo2} alt="Bridge Point Logo" className="w-52" />
+          <Link to="/">
+            <img src={Logo2} alt="Bridge Point Logo" className="w-52" />
+          </Link>
         </div>
         <p className="text-center text-gray-700 text-lg md:text-xl px-3 mt-4">
           {isServiceProvider
@@ -370,6 +372,15 @@ const Register = () => {
           >
             Register
           </button>
+          <p className="text-center mt-4">
+            Already have an account?{" "}
+            <Link
+              to="/login"
+              className="text-orange-600 hover:text-orange-700 font-semibold"
+            >
+              Login
+            </Link>
+          </p>
         </form>
       </div>
 
