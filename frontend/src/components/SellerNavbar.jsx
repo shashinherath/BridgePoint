@@ -58,7 +58,7 @@ export default function SellerNavbar({ onSearch }) {
     localStorage.removeItem("token");
     localStorage.removeItem("userType");
     localStorage.removeItem("providedservice");
-    navigate("/login");
+    navigate("/");
   };
 
   const handleGoHome = () => {
@@ -236,7 +236,7 @@ export default function SellerNavbar({ onSearch }) {
                   <Disclosure.Button
                     as="a"
                     href="#"
-                    onClick={handleSignOut}
+                    onClick={handleGoHome}
                     className="block rounded-md px-3 py-2 text-base font-medium text-white hover:bg-orange-700 hover:text-white"
                   >
                     Go to Home
