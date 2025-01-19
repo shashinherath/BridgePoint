@@ -21,6 +21,7 @@ import DoubleCab from "../assets/images/rides/DoubleCab.png";
 import Bus from "../assets/images/rides/Bus.png";
 import TourGuide from "../assets/images/guide/TourGuide.png";
 import Tent from "../assets/images/guide/Tent.png";
+import WhiteSpace from "../assets/images/guide/Whitespace.png";
 
 export default function BrowseService({ category }) {
   const categories = {
@@ -145,9 +146,34 @@ export default function BrowseService({ category }) {
           url: "/listing?category=guide&item=tour",
         },
         {
-          name: "Camping ",
+          name: "Camping",
           image: Tent,
           url: "/listing?category=guide&item=tent",
+        },
+        {
+          name: "",
+          image: WhiteSpace,
+          url: "/listing?category=guide",
+        },
+        {
+          name: "",
+          image: WhiteSpace,
+          url: "/listing?category=guide",
+        },
+        {
+          name: "",
+          image: WhiteSpace,
+          url: "/listing?category=guide",
+        },
+        {
+          name: "",
+          image: WhiteSpace,
+          url: "/listing?category=guide",
+        },
+        {
+          name: "",
+          image: WhiteSpace,
+          url: "/listing?category=guide",
         },
       ],
     },
