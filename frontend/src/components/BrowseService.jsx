@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import Riceandcurry from "../assets/images/foodcategory/Riceandcurry.png";
 import Pizza from "../assets/images/foodcategory/Pizza.png";
 import Bakery from "../assets/images/foodcategory/Bakery.png";
@@ -25,40 +26,111 @@ export default function BrowseService({ category }) {
       title: "Affordable, Fresh, Food to Your Door Steps",
       subtitle: "Browse any food you want!",
       items: [
-        { name: "Rice and Curry", image: Riceandcurry },
-        { name: "Pizza", image: Pizza },
-        { name: "Bakery", image: Bakery },
-        { name: "Wings", image: Wings },
-        { name: "Burgers", image: Burgers },
-        { name: "Fruits", image: Fruits },
-        { name: "Juice", image: Juice },
+        {
+          name: "Rice and Curry",
+          image: Riceandcurry,
+          url: "/listing?category=food&item=rice",
+        },
+        {
+          name: "Pizza",
+          image: Pizza,
+          url: "/listing?category=food&item=pizza",
+        },
+        {
+          name: "Bakery",
+          image: Bakery,
+          url: "/listing?category=food&item=bakery",
+        },
+        {
+          name: "Wings",
+          image: Wings,
+          url: "/listing?category=food&item=wings",
+        },
+        {
+          name: "Burgers",
+          image: Burgers,
+          url: "/listing?category=food&item=burgers",
+        },
+        {
+          name: "Fruits",
+          image: Fruits,
+          url: "/listing?category=food&item=fruits",
+        },
+        {
+          name: "Juice",
+          image: Juice,
+          url: "/listing?category=food&item=juice",
+        },
       ],
     },
     accommodation: {
       title: "Comfortable, Safe, Housing Right at Your Fingertips",
       subtitle: "Find Your Perfect Home Away from Home!",
       items: [
-        { name: "Malangamuwa Road", image: Malangamuwa },
-        { name: "Badulusirigama", image: Badulusirigama },
-        { name: "Rambukpotha", image: Rambukpotha },
-        { name: "Badulusirigama", image: Badulusirigama2 },
-        { name: "2nd Mile", image: SecondMile },
-        { name: "Badulusirigama", image: Badulusirigama2 },
-        { name: "2nd Mile", image: SecondMile },
+        {
+          name: "Malangamuwa Road",
+          image: Malangamuwa,
+          url: "/listing?category=accommodation&item=malangamuwa",
+        },
+        {
+          name: "Badulusirigama",
+          image: Badulusirigama,
+          url: "/listing?category=accommodation&item=badulusirigama",
+        },
+        {
+          name: "Rambukpotha",
+          image: Rambukpotha,
+          url: "/listing?category=accommodation&item=rambukpotha",
+        },
+        {
+          name: "Badulusirigama",
+          image: Badulusirigama2,
+          url: "/listing?category=accommodation&item=badulusirigama",
+        },
+        {
+          name: "2nd Mile",
+          image: SecondMile,
+          url: "/listing?category=accommodation&item=2ndmile",
+        },
+        {
+          name: "Badulusirigama",
+          image: Badulusirigama2,
+          url: "/listing?category=accommodation&item=badulusirigama",
+        },
+        {
+          name: "2nd Mile",
+          image: SecondMile,
+          url: "/listing?category=accommodation&item=2ndmile",
+        },
       ],
     },
     rides: {
       title: "Seamless Travel, Shared Connections!",
       subtitle: "Pick the Ride That Fits You!",
       items: [
-        { name: "Bicycle", image: Bicycle },
-
-        { name: "EBike", image: EBike },
-        { name: "MotorBike", image: MotorBike },
-        { name: "Car", image: Car },
-        { name: "Van", image: Van },
-        { name: "Double Cab", image: DoubleCab },
-        { name: "Bus", image: Bus },
+        {
+          name: "Bicycle",
+          image: Bicycle,
+          url: "/listing?category=rides&item=bicycle",
+        },
+        {
+          name: "EBike",
+          image: EBike,
+          url: "/listing?category=rides&item=ebike",
+        },
+        {
+          name: "MotorBike",
+          image: MotorBike,
+          url: "/listing?category=rides&item=motorbike",
+        },
+        { name: "Car", image: Car, url: "/listing?category=rides&item=car" },
+        { name: "Van", image: Van, url: "/listing?category=rides&item=van" },
+        {
+          name: "Double Cab",
+          image: DoubleCab,
+          url: "/listing?category=rides&item=doublecab",
+        },
+        { name: "Bus", image: Bus, url: "/listing?category=rides&item=bus" },
       ],
     },
     guide: {
@@ -76,15 +148,20 @@ export default function BrowseService({ category }) {
       <p className="text-xl pb-5">{selectedCategory.subtitle}</p>
       <div className="flex flex-wrap justify-between space-x-8 sm:space-x-0">
         {selectedCategory.items.map((item, i) => (
-          <div key={i} className="flex flex-col items-center justify-center">
-            <img
-              src={item.image}
-              alt={item.name}
-              className="h-8 w-8 sm:h-8 sm:w-8 md:h-12 md:w-12 lg:h-16 lg:w-16"
-            />
-            <p className="flex justify-center font-bold text-sm pt-2 pb-3 sm:pb-0">
-              {item.name}
-            </p>
+          <div
+            key={i}
+            className="flex flex-col items-center justify-center transition-transform transform hover:scale-105"
+          >
+            <Link to={item.url}>
+              <img
+                src={item.image}
+                alt={item.name}
+                className="h-8 w-8 sm:h-8 sm:w-8 md:h-12 md:w-12 lg:h-16 lg:w-16 transition-transform transform hover:scale-110"
+              />
+              <p className="flex justify-center font-bold text-sm pt-2 pb-3 sm:pb-0 transition-colors hover:text-blue-500">
+                {item.name}
+              </p>
+            </Link>
           </div>
         ))}
       </div>
