@@ -148,7 +148,7 @@ export default function BrowseService({ category }) {
         {
           name: "Camping",
           image: Tent,
-          url: "/listing?category=guide&item=tent",
+          url: "/listing?category=guide&item=camping",
         },
         {
           name: "",
