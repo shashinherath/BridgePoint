@@ -114,11 +114,13 @@ export default function BrowseList({ category, searchTerm }) {
             key={item.id || index}
             className="bg-white w-72 h-auto m-4 rounded-lg shadow-xl transform transition-transform duration-300 hover:scale-105 hover:shadow-2xl"
           >
-            <img
-              src={backendUrl + item.imageUrl}
-              alt="item"
-              className="w-full h-40 object-cover"
-            />
+            <div className="bg-gray-300 p-3 rounded-lg flex-1">
+              <img
+                src={backendUrl + item.imageUrl}
+                alt="item"
+                className="w-full h-40 object-cover"
+              />
+            </div>
             <div className="p-4">
               <h1 className="text-xl font-semibold">{item.name}</h1>
               <p className="text-sm text-gray-500 font-semibold">
