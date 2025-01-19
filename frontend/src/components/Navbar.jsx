@@ -124,12 +124,12 @@ export default function Navbar({ onSearch, searchItem }) {
                 <div className="flex items-center px-2 lg:px-0">
                   <div className="flex-shrink-0">
                     <img
-                      className="block h-8 w-auto lg:hidden"
+                      className="block h-8 w-auto lg:hidden transition-transform duration-300 transform hover:scale-110"
                       src={Logo}
                       alt="BridgePoint"
                     />
                     <img
-                      className="hidden h-20 w-auto lg:block"
+                      className="hidden h-20 w-auto lg:block transition-transform duration-300 transform hover:scale-110"
                       src={Logo}
                       alt="BridgePoint"
                     />
