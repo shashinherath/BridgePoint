@@ -28,7 +28,15 @@ export default function BrowseList({ category, searchTerm }) {
             },
           }
         );
-        setItems(response.data);
+        const itemsWithRatings = await Promise.all(
+          response.data.map(async (item) => {
+            const ratingResponse = await axios.get(
+              `${backendUrl}/api/services/getaveragerating/${item.providerId._id}`
+            );
+            return { ...item, averageRating: ratingResponse.data.average };
+          })
+        );
+        setItems(itemsWithRatings);
       } catch (error) {
         console.error("Error fetching food items:", error);
       }
@@ -37,15 +45,17 @@ export default function BrowseList({ category, searchTerm }) {
     fetchItems();
   }, [category]);
 
-  const filteredItems = items.filter(
-    (item) =>
-      item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.providerId.companyname
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase()) ||
-      item.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.price.toString().includes(searchTerm)
-  );
+  const filteredItems = items
+    .filter(
+      (item) =>
+        item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.providerId.companyname
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase()) ||
+        item.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.price.toString().includes(searchTerm)
+    )
+    .sort((a, b) => b.averageRating - a.averageRating);
 
   const openPopup = (item) => {
     setSelectedItem(item);
@@ -57,6 +67,43 @@ export default function BrowseList({ category, searchTerm }) {
     setShowPopup(false);
   };
 
+  const renderStarRating = (rating) => {
+    const fullStars = Math.floor(rating);
+    const halfStar = rating % 1 !== 0;
+    const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+
+    const stars = [];
+    for (let i = 1; i <= fullStars; i++) {
+      stars.push(
+        <span key={`full-${i}`} className="text-yellow-500">
+          ★
+        </span>
+      );
+    }
+    if (halfStar) {
+      stars.push(
+        <span key="half" className="text-yellow-300">
+          ★
+        </span>
+      );
+    }
+    for (let i = 1; i <= emptyStars; i++) {
+      stars.push(
+        <span key={`empty-${i}`} className="text-gray-300">
+          ★
+        </span>
+      );
+    }
+    return (
+      <div className="flex items-center">
+        {stars}
+        <span className="ml-2 text-gray-500 font-semibold">
+          {rating.toFixed(1)}
+        </span>
+      </div>
+    );
+  };
+
   return (
     <div className="flex flex-col justify-start w-full px-20">
       <h1 className="text-2xl font-bold">Popular near you</h1>
@@ -65,18 +112,20 @@ export default function BrowseList({ category, searchTerm }) {
         {filteredItems.map((item, index) => (
           <div
             key={item.id || index}
-            className="bg-white w-72 h-64 m-4 rounded-lg shadow-xl transform transition-transform duration-300 hover:scale-105 hover:shadow-2xl"
+            className="bg-white w-72 h-auto m-4 rounded-lg shadow-xl transform transition-transform duration-300 hover:scale-105 hover:shadow-2xl"
           >
             <img
               src={backendUrl + item.imageUrl}
               alt="item"
-              className="w-full h-32 object-cover"
+              className="w-full h-40 object-cover"
             />
             <div className="p-4">
               <h1 className="text-xl font-semibold">{item.name}</h1>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-gray-500 font-semibold">
                 {item.providerId.companyname}
               </p>
+              {item.averageRating !== undefined &&
+                renderStarRating(item.averageRating)}
               <div className="mt-4 flex justify-between items-center">
                 <p className="text-xl font-bold">Rs. {item.price}</p>
                 <button
