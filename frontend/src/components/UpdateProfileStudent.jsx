@@ -101,11 +101,11 @@ const UpdateProfileStudent = ({ onClose, onSave }) => {
       onClick={onClose}
     >
       <div
-        className="bg-white p-4 rounded shadow-lg w-full max-w-4xl my-20 max-h-full flex flex-col justify-center overflow-y-auto gap-5 px-3 md:px-16 lg:px-28 md:flex-row text-[#161931]"
+        className="relative bg-white p-4 rounded shadow-lg w-full max-w-4xl my-20 max-h-full flex flex-col justify-center overflow-y-auto gap-5 px-3 md:px-16 lg:px-28 md:flex-row text-[#161931]"
         onClick={(e) => e.stopPropagation()}
       >
         <button
-          className="absolute right-64 w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-gray-800 transition-colors duration-200"
+          className="absolute -right-0 -top-0 w-8 h-8 flex items-center justify-center rounded-full bg-gray-200 text-gray-600 hover:bg-gray-300 hover:text-gray-800 transition-colors duration-200"
           onClick={onClose}
         >
           ✕
