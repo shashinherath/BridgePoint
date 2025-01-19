@@ -48,7 +48,7 @@ export default function Navbar({ onSearch, searchItem }) {
 
     fetchData();
     onSearch(searchItem);
-  }, []);
+  }, [token]);
 
   const handleProfileClick = () => {
     setIsProfileOpen(true);
@@ -67,7 +67,7 @@ export default function Navbar({ onSearch, searchItem }) {
     localStorage.removeItem("token");
     localStorage.removeItem("userType");
     localStorage.removeItem("providedservice");
-    navigate("/login");
+    navigate("/");
   };
 
   const handleGoDashboard = () => {
@@ -331,18 +331,71 @@ export default function Navbar({ onSearch, searchItem }) {
                 </Link>
               </div>
               <div className="border-t border-orange-700 pb-3 pt-4">
-                <div className="mt-3 space-y-1 px-2">
-                  <Link to="/register">
-                    <Disclosure.Button className="block rounded-md px-3 py-2 text-base font-medium text-orange-400 hover:bg-orange-700 hover:text-white">
-                      Register
-                    </Disclosure.Button>
-                  </Link>
-                  <Link to="/login">
-                    <Disclosure.Button className="block rounded-md px-3 py-2 text-base font-medium text-orange-400 hover:bg-orange-700 hover:text-white">
-                      Login
-                    </Disclosure.Button>
-                  </Link>
-                </div>
+                {token === null && (
+                  <div className="mt-3 space-y-1 px-2">
+                    <Link to="/register">
+                      <Disclosure.Button className="block rounded-md px-3 py-2 text-base font-medium text-orange-400 hover:bg-orange-700 hover:text-white">
+                        Register
+                      </Disclosure.Button>
+                    </Link>
+                    <Link to="/login">
+                      <Disclosure.Button className="block rounded-md px-3 py-2 text-base font-medium text-orange-400 hover:bg-orange-700 hover:text-white">
+                        Login
+                      </Disclosure.Button>
+                    </Link>
+                  </div>
+                )}
+                {token !== null && (
+                  <>
+                    <div className="flex items-center px-5">
+                      <div className="flex-shrink-0">
+                        <img
+                          className="h-10 w-10 rounded-full"
+                          src={backendUrl + userData.profileImageUrl}
+                          alt=""
+                        />
+                      </div>
+                      <div className="ml-3">
+                        <div className="text-base font-medium text-white">
+                          {userType === "serviceprovider"
+                            ? userData.companyname
+                            : userData.firstname + userData.lastname}
+                        </div>
+                        <div className="text-sm font-medium text-white">
+                          {userData.email}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="mt-3 space-y-1 px-2">
+                      <Disclosure.Button
+                        as="a"
+                        href="#"
+                        onClick={handleProfileClick}
+                        className="block rounded-md px-3 py-2 text-base font-medium text-white hover:bg-orange-700 hover:text-white"
+                      >
+                        Your Profile
+                      </Disclosure.Button>
+                      {userType === "serviceprovider" && (
+                        <Disclosure.Button
+                          as="a"
+                          href="#"
+                          onClick={handleGoDashboard}
+                          className="block rounded-md px-3 py-2 text-base font-medium text-white hover:bg-orange-700 hover:text-white"
+                        >
+                          Go to Dashboard
+                        </Disclosure.Button>
+                      )}
+                      <Disclosure.Button
+                        as="a"
+                        href="#"
+                        className="block rounded-md px-3 py-2 text-base font-medium text-white hover:bg-orange-700 hover:text-white"
+                        onClick={handleSignOut}
+                      >
+                        Sign out
+                      </Disclosure.Button>
+                    </div>
+                  </>
+                )}
               </div>
             </Disclosure.Panel>
           </>
