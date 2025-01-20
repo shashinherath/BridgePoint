@@ -5,14 +5,17 @@ const path = require("path");
 const storage = multer.diskStorage({
   destination: "./uploads/",
   filename: (req, file, cb) => {
-    cb(null, file.fieldname + "-" + Date.now() + path.extname(file.originalname));
+    cb(
+      null,
+      file.fieldname + "-" + Date.now() + path.extname(file.originalname)
+    );
   },
 });
 
 // Initialize upload
 const upload = multer({
   storage: storage,
-  limits: { fileSize: 1000000 }, // 1MB limit
+  limits: { fileSize: 5000000 }, // 5MB limit
   fileFilter: (req, file, cb) => {
     checkFileType(file, cb);
   },
