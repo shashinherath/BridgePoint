@@ -2,13 +2,10 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import Logo2 from "../assets/logo/Logo2.png";
-import background from "../assets/images/Background.jpg";
+import background from "../assets/images/Background.png";
 
 const Register = () => {
-  const backendUrl =
-    process.env.NODE_ENV === "development"
-      ? "http://localhost:5000"
-      : process.env.Backend_URL;
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const navigate = useNavigate();
   const [isServiceProvider, setIsServiceProvider] = useState(false);
   const [formData, setFormData] = useState({
@@ -176,7 +173,7 @@ const Register = () => {
                 <input
                   type="email"
                   name="email"
-                  placeholder="ex: ict21067@std.uwu.ac.lk"
+                  placeholder="ex: yourname@gmail.com"
                   value={formData.email}
                   onChange={handleChange}
                   className="mt-1 block w-full px-4 py-2 border border-gray-500 rounded-lg outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
@@ -281,7 +278,7 @@ const Register = () => {
                 <input
                   type="text"
                   name="email"
-                  placeholder="myname@example.com"
+                  placeholder="yourname@gmail.com"
                   value={formData.email}
                   onChange={handleChange}
                   className="mt-1 block w-full px-4 py-2 border border-gray-500 rounded-lg outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"

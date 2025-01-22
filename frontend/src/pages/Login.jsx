@@ -1,15 +1,12 @@
 import React from "react";
 import Logo2 from "../assets/logo/Logo2.png";
-import background from "../assets/images/Background.jpg";
+import background from "../assets/images/Background.png";
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
 function App() {
-  const backendUrl =
-    process.env.NODE_ENV === "development"
-      ? "http://localhost:5000"
-      : process.env.Backend_URL;
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   const [formData, setFormData] = useState({
     email: "",

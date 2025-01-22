@@ -3,7 +3,7 @@ import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import Logo from "../assets/logo/logo.png";
+import Logo from "../assets/logo/Logo.png";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import UpdateProfile from "./UpdateProfile";
@@ -14,10 +14,7 @@ function classNames(...classes) {
 }
 
 export default function Navbar({ onSearch, searchItem }) {
-  const backendUrl =
-    process.env.NODE_ENV === "development"
-      ? "http://localhost:5000"
-      : process.env.Backend_URL;
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   const token = localStorage.getItem("token");
   const userType = localStorage.getItem("userType");

@@ -11,10 +11,7 @@ import {
 import { useParams } from "react-router-dom";
 
 const SellerProfile = () => {
-  const backendUrl =
-    process.env.NODE_ENV === "development"
-      ? "http://localhost:5000"
-      : process.env.Backend_URL;
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   const token = localStorage.getItem("token");
 

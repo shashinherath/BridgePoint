@@ -5,10 +5,7 @@ import { FaTimes } from "react-icons/fa";
 import { PaperAirplaneIcon } from "@heroicons/react/24/outline";
 
 const ListView = ({ selectedItem, closePopup, category }) => {
-  const backendUrl =
-    process.env.NODE_ENV === "development"
-      ? "http://localhost:5000"
-      : process.env.Backend_URL;
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(0);
