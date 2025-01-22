@@ -7,7 +7,7 @@ const ItemPopup = ({ item, onClose, onEdit, onDelete, onAdd }) => {
   const backendUrl =
     process.env.NODE_ENV === "development"
       ? "http://localhost:5000"
-      : process.env.Backend_URL;
+      : import.meta.env.VITE_BACKEND_URL;
 
   const token = localStorage.getItem("token");
   const providedservice = localStorage.getItem("providedservice");

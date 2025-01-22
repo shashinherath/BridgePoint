@@ -8,7 +8,7 @@ const Register = () => {
   const backendUrl =
     process.env.NODE_ENV === "development"
       ? "http://localhost:5000"
-      : process.env.Backend_URL;
+      : import.meta.env.VITE_BACKEND_URL;
   const navigate = useNavigate();
   const [isServiceProvider, setIsServiceProvider] = useState(false);
   const [formData, setFormData] = useState({
