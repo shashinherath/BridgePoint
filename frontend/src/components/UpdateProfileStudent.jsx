@@ -3,10 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const UpdateProfileStudent = ({ onClose, onSave }) => {
-  const backendUrl =
-    import.meta.env.MODE === "development"
-      ? "http://localhost:5000"
-      : import.meta.env.VITE_BACKEND_URL;
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   const token = localStorage.getItem("token");
 

@@ -5,10 +5,7 @@ import AddItemPopup from "./AddItemPopup";
 import ItemPopup from "./ItemPopup";
 
 export default function SellerListing({ searchTerm }) {
-  const backendUrl =
-    import.meta.env.MODE === "development"
-      ? "http://localhost:5000"
-      : import.meta.env.VITE_BACKEND_URL;
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   const token = localStorage.getItem("token");
 

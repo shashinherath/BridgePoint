@@ -6,10 +6,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
 function App() {
-  const backendUrl =
-    import.meta.env.MODE === "development"
-      ? "http://localhost:5000"
-      : import.meta.env.VITE_BACKEND_URL;
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   const [formData, setFormData] = useState({
     email: "",
