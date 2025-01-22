@@ -9,7 +9,7 @@ function App() {
   const backendUrl =
     process.env.NODE_ENV === "development"
       ? "http://localhost:5000"
-      : process.env.Backend_URL;
+      : import.meta.env.VITE_BACKEND_URL;
 
   const [formData, setFormData] = useState({
     email: "",
