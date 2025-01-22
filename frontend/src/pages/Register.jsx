@@ -6,7 +6,7 @@ import background from "../assets/images/Background.png";
 
 const Register = () => {
   const backendUrl =
-    process.env.NODE_ENV === "development"
+    import.meta.env.MODE === "development"
       ? "http://localhost:5000"
       : import.meta.env.VITE_BACKEND_URL;
   const navigate = useNavigate();
