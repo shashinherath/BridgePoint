@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import Logo2 from "../assets/logo/Logo2.png";
-import background from "../assets/images/Background.jpg";
+import background from "../assets/images/Background.png";
 
 const Register = () => {
   const backendUrl =
