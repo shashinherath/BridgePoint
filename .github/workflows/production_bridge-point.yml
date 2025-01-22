@@ -4,10 +4,11 @@
 name: Build and deploy Node.js app to Azure Web App - bridge-point
 
 on:
-  push:
-    branches:
-      - production
-  workflow_dispatch:
+  release:
+    types: [created]
+    # Ensure release name starts with 'backend-'
+    tags:
+      - 'backend-*'
 
 jobs:
   build:
