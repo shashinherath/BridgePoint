@@ -12,10 +12,7 @@ function classNames(...classes) {
 }
 
 export default function SellerNavbar({ onSearch }) {
-  const backendUrl =
-    import.meta.env.MODE === "development"
-      ? "http://localhost:5000"
-      : import.meta.env.VITE_BACKEND_URL;
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   const token = localStorage.getItem("token");
 

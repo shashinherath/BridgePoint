@@ -2,10 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 
 export default function AddItemPopup({ onClose, onAddItem }) {
-  const backendUrl =
-    import.meta.env.MODE === "development"
-      ? "http://localhost:5000"
-      : import.meta.env.VITE_BACKEND_URL;
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   const token = localStorage.getItem("token");
   const providedservice = localStorage.getItem("providedservice");

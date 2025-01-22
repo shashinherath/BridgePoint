@@ -5,10 +5,7 @@ import Logo2 from "../assets/logo/Logo2.png";
 import background from "../assets/images/Background.png";
 
 const Register = () => {
-  const backendUrl =
-    import.meta.env.MODE === "development"
-      ? "http://localhost:5000"
-      : import.meta.env.VITE_BACKEND_URL;
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const navigate = useNavigate();
   const [isServiceProvider, setIsServiceProvider] = useState(false);
   const [formData, setFormData] = useState({
