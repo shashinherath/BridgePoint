@@ -6,7 +6,7 @@ import { PaperAirplaneIcon } from "@heroicons/react/24/outline";
 
 const ListView = ({ selectedItem, closePopup, category }) => {
   const backendUrl =
-    process.env.NODE_ENV === "development"
+    import.meta.env.MODE === "development"
       ? "http://localhost:5000"
       : import.meta.env.VITE_BACKEND_URL;
 
