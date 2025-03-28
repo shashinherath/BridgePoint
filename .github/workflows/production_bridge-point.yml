@@ -4,15 +4,16 @@
 name: Build and deploy Node.js app to Azure Web App - bridge-point
 
 on:
-  release:
-    types: [created]
-    # Ensure release name starts with 'backend-'
-    tags:
-      - 'backend-*'
+  push:
+    branches:
+      - production
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read #This is required for actions/checkout
 
     steps:
       - uses: actions/checkout@v4
@@ -23,20 +24,19 @@ jobs:
           node-version: '22.x'
 
       - name: npm install, build, and test
-        working-directory: ./backend
         run: |
           npm install
           npm run build --if-present
+          npm run test --if-present
 
       - name: Zip artifact for deployment
-        working-directory: ./backend
         run: zip release.zip ./* -r
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: node-app
-          path: ./backend/release.zip
+          path: release.zip
 
   deploy:
     runs-on: ubuntu-latest
@@ -61,4 +61,4 @@ jobs:
           app-name: 'bridge-point'
           slot-name: 'Production'
           package: .
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_E2EE32A23FFF40FA83B6F9B88A604B5F }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_A5FD5164616640C5AA55CEED4E9CF4E2 }}
